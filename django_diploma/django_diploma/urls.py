@@ -3,6 +3,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include("frontend.urls")),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path("shop/", include("shop.urls")),
+    path("", include("shop.urls")),
 ]
