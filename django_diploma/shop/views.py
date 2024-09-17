@@ -13,3 +13,4 @@ class CategoryListView(ListView):
     model = Category
 
 
+# python manage.py create_products

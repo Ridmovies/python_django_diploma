@@ -16,7 +16,10 @@ class Product(models.Model):
         validators=[MaxValueValidator(5), MinValueValidator(0)],
     )
 
-    category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True)
+    # category = models.ForeignKey("Category", on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Category(models.Model):
