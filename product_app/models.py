@@ -31,3 +31,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def product_image_directory_path(instance: "ProductImage", filename):
+    return f"products/images/{filename}"
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="product", null=True)
+    src = models.ImageField(upload_to=product_image_directory_path)
+    alt = models.CharField(max_length=32, null=True)
