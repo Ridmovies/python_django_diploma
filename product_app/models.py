@@ -14,7 +14,7 @@ class Product(models.Model):
     # TODO Create dynamic rating
     rating = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, blank=True, null=True)
-    tags = models.ForeignKey("Tag", on_delete=models.CASCADE, blank=True, null=True)
+    tags = models.ManyToManyField("Tag", blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -46,3 +46,7 @@ class ProductImage(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=12)
+
+    def __str__(self):
+        return self.name
+
