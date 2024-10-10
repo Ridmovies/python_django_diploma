@@ -1,4 +1,6 @@
 asgiref==3.8.1
+diploma-frontend @ file:///C:/Coding/Python/skillbox/python_django_diploma/diploma-frontend/dist/diploma-frontend-0.6.tar.gz
 Django==5.1.2
+djangorestframework==3.15.2
 sqlparse==0.5.1
 tzdata==2024.2
