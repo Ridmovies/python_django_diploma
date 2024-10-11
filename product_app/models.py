@@ -65,3 +65,16 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.author}, {self.product}"
+
+
+class Specification(models.Model):
+    name = models.CharField(max_length=32)
+    value = models.CharField(max_length=32)
+    product = models.ForeignKey(
+        to=Product,
+        related_name="specifications",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return f"{self.product}, {self.name},  {self.value}"

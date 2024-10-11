@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/django_diploma" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11 (DIPLOMA)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (python_django_diploma) (3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

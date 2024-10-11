@@ -1,8 +1,8 @@
-# from rest_framework.serializers import ModelSerializer
-from django.contrib.auth.models import User
+import datetime
+
 from rest_framework import serializers
 
-from product_app.models import Product, ProductImage, Tag, Review
+from product_app.models import Product, ProductImage, Tag, Review, Specification
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -19,6 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     author = serializers.CharField(source='author.username')
+    date = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -30,11 +31,24 @@ class ReviewSerializer(serializers.ModelSerializer):
             "date",
         )
 
+    def get_date(self, instance):
+        return datetime.datetime.strftime(instance.date, '%d.%m.%Y %H:%M')
+
+
+class SpecificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specification
+        fields = (
+            "name",
+            "value",
+        )
+
 
 class ProductFullSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True)
     tags = TagSerializer(many=True, required=False)
     reviews = ReviewSerializer(many=True, required=False)
+    specifications = SpecificationSerializer(many=True, required=False)
 
     class Meta:
         model = Product
@@ -51,7 +65,7 @@ class ProductFullSerializer(serializers.ModelSerializer):
             "images",
             "tags",
             "reviews",
-            # "specifications",
+            "specifications",
             # "rating",
         )
 
