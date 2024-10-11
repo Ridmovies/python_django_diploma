@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from catalog_app.models import SaleItem
+
+
+@admin.register(SaleItem)
+class SaleItemAdmin(admin.ModelAdmin):
+    pass

@@ -64,8 +64,8 @@ class Review(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(to=Product, related_name="reviews", on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return f"{self.author}, {self.product}"
+    def __str__(self):
+        return f"{self.author}, {self.product}"
 
 
 class Specification(models.Model):
