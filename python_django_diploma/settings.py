@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'product_app.apps.ProductAppConfig',
     'catalog_app.apps.CatalogAppConfig',
+    'auth_app.apps.AuthAppConfig',
 ]
 
 MIDDLEWARE = [
