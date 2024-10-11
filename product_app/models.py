@@ -54,7 +54,8 @@ class Tag(models.Model):
 
 
 class Review(models.Model):
-    author = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    # author = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    author = models.CharField(max_length=48)
     email = models.EmailField(blank=True, null=True)
     text = models.TextField()
     rate = models.PositiveSmallIntegerField(
@@ -63,8 +64,8 @@ class Review(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     product = models.ForeignKey(to=Product, related_name="reviews", on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.author}, {self.product}"
+    # def __str__(self):
+    #     return f"{self.author}, {self.product}"
 
 
 class Specification(models.Model):

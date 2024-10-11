@@ -18,8 +18,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='author.username')
     date = serializers.SerializerMethodField()
+    product_id = serializers.IntegerField(default=1, write_only=True)
 
     class Meta:
         model = Review
@@ -29,6 +29,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             "text",
             "rate",
             "date",
+            "product_id",
         )
 
     def get_date(self, instance):
@@ -66,6 +67,6 @@ class ProductFullSerializer(serializers.ModelSerializer):
             "tags",
             "reviews",
             "specifications",
-            # "rating",
+            "rating",
         )
 
