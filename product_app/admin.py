@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from product_app.models import Product, Category, ProductImage, Tag
+from product_app.models import Product, Category, ProductImage, Tag, Review
 
 
 @admin.register(Product)
@@ -20,5 +20,10 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
     pass
 

@@ -1,3 +1,5 @@
+from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
@@ -14,7 +16,6 @@ class Product(models.Model):
     # TODO Create dynamic rating
     rating = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, blank=True, null=True)
-    tags = models.ManyToManyField("Tag", blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -46,7 +47,21 @@ class ProductImage(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=12)
+    product = models.ManyToManyField(Product, related_name="tags", verbose_name="product")
 
     def __str__(self):
         return self.name
 
+
+class Review(models.Model):
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    email = models.EmailField(blank=True, null=True)
+    text = models.TextField()
+    rate = models.PositiveSmallIntegerField(
+        validators=[MaxValueValidator(5), MinValueValidator(1)], default=1,
+    )
+    date = models.DateTimeField(auto_now_add=True)
+    product = models.ForeignKey(to=Product, related_name="reviews", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.author}, {self.product}"
