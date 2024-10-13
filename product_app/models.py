@@ -39,9 +39,19 @@ def product_image_directory_path(instance: "ProductImage", filename):
     return f"products/images/{filename}"
 
 
+def category_image_directory_path(instance: "CategoryImage", filename: str) -> str:
+    return f"categories/images/{filename}"
+
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="product", null=True)
     src = models.ImageField(upload_to=product_image_directory_path)
+    alt = models.CharField(max_length=32, null=True)
+
+
+class CategoryImage(models.Model):
+    category = models.OneToOneField(Category, on_delete=models.CASCADE, related_name="image", null=True)
+    src = models.ImageField(upload_to=category_image_directory_path)
     alt = models.CharField(max_length=32, null=True)
 
 

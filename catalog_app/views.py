@@ -2,8 +2,8 @@ from rest_framework import generics
 from drf_spectacular.utils import extend_schema
 
 from catalog_app.models import SaleItem
-from catalog_app.serializers import SaleItemSerializer
-from product_app.models import Product
+from catalog_app.serializers import SaleItemSerializer, CategorySerializer
+from product_app.models import Product, Category
 from product_app.serializers import ProductFullSerializer
 
 
@@ -30,3 +30,8 @@ class SalesListApi(generics.ListAPIView):
     queryset = SaleItem.objects.all()
     serializer_class = SaleItemSerializer
 
+
+@extend_schema(tags=["catalog"], responses=CategorySerializer)
+class CategoriesListView(generics.ListAPIView):
+    queryset = Category.objects.filter(parent=None).all()
+    serializer_class = CategorySerializer
