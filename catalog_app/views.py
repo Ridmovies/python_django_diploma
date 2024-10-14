@@ -1,11 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from drf_spectacular.utils import extend_schema
-from rest_framework.response import Response
-from rest_framework.request import Request
-from rest_framework.views import APIView
 
-from catalog_app.models import SaleItem, Sale
-from catalog_app.serializers import SaleItemSerializer, CategorySerializer, SalesSerializer
+from catalog_app.models import Sale
+from catalog_app.pagination import CustomPagination
+from catalog_app.serializers import CategorySerializer, SaleSerializer
 from product_app.models import Product, Category
 from product_app.serializers import ProductFullSerializer
 
@@ -34,10 +32,14 @@ class CategoriesListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
-@extend_schema(tags=["catalog"], responses=SalesSerializer)
-class SaleApi(APIView):
-    def get(self, request: Request) -> Response:
-        sale = Sale.objects.first()
-        serialized = SalesSerializer(sale, many=False)
-        return Response(serialized.data)
+@extend_schema(tags=["catalog"], responses=SaleSerializer)
+class SaleApi(generics.ListAPIView):
+    queryset = Sale.objects.all().order_by("id")
+    serializer_class = SaleSerializer
+    pagination_class = CustomPagination
+
+
+
+
+
 

@@ -32,7 +32,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             "product_id",
         )
 
-    def get_date(self, instance):
+    def get_date(self, instance) -> str:
         return datetime.datetime.strftime(instance.date, '%d.%m.%Y %H:%M')
 
 

@@ -128,6 +128,8 @@ MEDIA_URL = 'media/'
 # Root folder for media
 MEDIA_ROOT = BASE_DIR / 'media/'
 
+PAGE_SIZE = 2
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

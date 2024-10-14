@@ -52,6 +52,9 @@ class ProductImage(models.Model):
     src = models.ImageField(upload_to=product_image_directory_path)
     alt = models.CharField(max_length=32, default=get_default_alt, null=True)
 
+    def __str__(self):
+        return str(self.product)
+
 
 class CategoryImage(models.Model):
     category = models.OneToOneField(Category, on_delete=models.CASCADE, related_name="image", null=True)
