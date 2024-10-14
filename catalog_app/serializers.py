@@ -1,21 +1,50 @@
+import datetime
+
 from rest_framework import serializers
 
-from catalog_app.models import SaleItem
+from catalog_app.models import SaleItem, Sale
 from product_app.models import Category, CategoryImage
+from product_app.serializers import ImageSerializer
 
 
 class SaleItemSerializer(serializers.ModelSerializer):
-    # images = ImageSerializer(many=True)
+    id = serializers.CharField(source="product.id", read_only=True)
+    images = ImageSerializer(source="product.images", many=True)
+    title = serializers.CharField(source="product.title", read_only=True)
+    price = serializers.CharField(source="product.price", read_only=True)
+    dateFrom = serializers.SerializerMethodField()
+    dateTo = serializers.SerializerMethodField()
 
     class Meta:
         model = SaleItem
         fields = (
-            # "price",
+            "id",
+            "price",
             "salePrice",
             "dateFrom",
             "dateTo",
-            # "title",
-            # "images",
+            "title",
+            "images",
+        )
+
+    def get_dateFrom(self, instance):
+        return datetime.datetime.strftime(instance.dateFrom, '%d-%m')
+
+    def get_dateTo(self, instance):
+        return datetime.datetime.strftime(instance.dateTo, '%d-%m')
+
+
+class SalesSerializer(serializers.ModelSerializer):
+    items = SaleItemSerializer(many=True)
+    # currentPage = serializers.IntegerField()
+    # lastPage = serializers.IntegerField()
+
+    class Meta:
+        model = Sale
+        fields = (
+            "items",
+            # "currentPage",
+            # "lastPage",
         )
 
 

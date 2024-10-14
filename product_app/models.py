@@ -43,10 +43,14 @@ def category_image_directory_path(instance: "CategoryImage", filename: str) -> s
     return f"categories/images/{filename}"
 
 
+def get_default_alt() -> str:
+    return "image"
+
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="product", null=True)
     src = models.ImageField(upload_to=product_image_directory_path)
-    alt = models.CharField(max_length=32, null=True)
+    alt = models.CharField(max_length=32, default=get_default_alt, null=True)
 
 
 class CategoryImage(models.Model):
