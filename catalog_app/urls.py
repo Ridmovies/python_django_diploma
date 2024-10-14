@@ -6,6 +6,7 @@ from catalog_app.views import (
     BannerListApi,
     SaleApi,
     CategoriesListView,
+    CatalogView,
 )
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path("banners/", BannerListApi.as_view()),
     path("sales/", SaleApi.as_view()),
     path("categories/", CategoriesListView.as_view()),
+    path("catalog/", CatalogView.as_view()),
 ]

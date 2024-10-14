@@ -39,6 +39,11 @@ class SaleApi(generics.ListAPIView):
     pagination_class = CustomPagination
 
 
+@extend_schema(tags=["catalog"], responses=ProductFullSerializer)
+class CatalogView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductFullSerializer
+
 
 
 
