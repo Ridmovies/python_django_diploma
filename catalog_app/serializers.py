@@ -9,7 +9,7 @@ from product_app.serializers import ImageSerializer
 
 class SaleItemSerializer(serializers.ModelSerializer):
     id = serializers.CharField(source="product.id", read_only=True)
-    images = ImageSerializer(source="product.images", many=True)
+    images = ImageSerializer(source="product.images", many=True, required=True)
     title = serializers.CharField(source="product.title", read_only=True)
     price = serializers.CharField(source="product.price", read_only=True)
     dateFrom = serializers.SerializerMethodField()
