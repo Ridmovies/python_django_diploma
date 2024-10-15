@@ -6,8 +6,11 @@ from rest_framework.response import Response
 
 
 class CustomPagination(PageNumberPagination):
+    # default page size
     page_size = settings.PAGE_SIZE
-    # page_size = settings.REST_FRAMEWORK['PAGE_SIZE']
+    # page size from query_param
+    page_size_query_param = 'limit'
+    # max page size for query_param
     max_page_size = 10
 
     def get_page_number(self, request, page):
