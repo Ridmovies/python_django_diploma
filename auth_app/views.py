@@ -9,7 +9,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from auth_app.models import Profile
+from auth_app.models import Profile, Avatar
 from auth_app.serializers import ProfileSerializer
 
 
@@ -66,7 +66,7 @@ class ProfileView(APIView):
         # return Response(serializer.data)
         data = request.data
 
-        del data['avatar']
+        # del data['avatar']
         print(f"{data=}")
         profile: Profile = Profile.objects.update(**data)
 
@@ -75,6 +75,17 @@ class ProfileView(APIView):
         # return Response(status=status.HTTP_200_OK)
 
 
+class ProfileAvatarView(APIView):
+    @extend_schema(tags=["profile"])
+    def post(self, request: Request) -> Response:
+        print(f"{request.data=}")
+        avatar = request.FILES["avatar"]
+        print(f"{avatar=}")
+        profile = Profile.objects.get(user=request.user)
+        avatar: Avatar = Avatar.objects.create(src=avatar)
+        profile.avatar = avatar
+        profile.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 

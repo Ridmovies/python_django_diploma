@@ -5,6 +5,7 @@ from auth_app.views import (
     SignUpApiView,
     LogoutView,
     ProfileView,
+    ProfileAvatarView,
 )
 
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path("sign-up", SignUpApiView.as_view()),
 
     path("profile", ProfileView.as_view()),
+    path("profile/avatar", ProfileAvatarView.as_view()),
 ]
