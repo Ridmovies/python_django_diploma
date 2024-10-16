@@ -6,6 +6,7 @@ from auth_app.views import (
     LogoutView,
     ProfileView,
     ProfileAvatarView,
+    ChangePasswordView,
 )
 
 
@@ -16,4 +17,5 @@ urlpatterns = [
 
     path("profile", ProfileView.as_view()),
     path("profile/avatar", ProfileAvatarView.as_view()),
+    path("profile/password", ChangePasswordView.as_view()),
 ]

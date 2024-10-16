@@ -3,6 +3,7 @@ import os
 
 
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -98,6 +99,26 @@ class ProfileAvatarView(APIView):
                 os.remove(old_avatar_src)
             except OSError as e:
                 print("Error removing file: {}".format(e))
+        return Response(status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(APIView):
+    @extend_schema(tags=["profile"])
+    def post(self, request: Request) -> Response:
+        print(f"{request.data=}")
+        user: User = User.objects.get(id=request.user.id)
+
+        current_password = request.data.get('currentPassword', None)
+        if current_password:
+            is_valid = check_password(current_password, user.password)
+            if not is_valid:
+                return Response("Wrong current password", status=status.HTTP_409_CONFLICT)
+
+        new_password = request.data.get('newPassword', None)
+        if new_password:
+            hashed_password = make_password(new_password)
+            user.password = hashed_password
+            user.save()
         return Response(status=status.HTTP_200_OK)
 
 
