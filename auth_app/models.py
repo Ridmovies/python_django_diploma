@@ -2,6 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+def avatar_image_directory_path(instance: "Avatar", filename: str) -> str:
+    return f"avatars/images/{filename}"
+
+
 class Profile(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, primary_key=True)
     fullName = models.CharField(max_length=128, null=True)
@@ -18,12 +22,10 @@ class Avatar(models.Model):
     #                                on_delete=models.CASCADE,
     #                                # related_name='avatar',
     #                                null=True)
-    src = models.ImageField(upload_to="avatar_image_directory_path")
+    src = models.ImageField(upload_to=avatar_image_directory_path)
     alt = models.CharField(max_length=12, default="avatar")
 
     def __str__(self):
         return f"{self.alt}"
 
 
-def avatar_image_directory_path(instance, filename):
-    return f"avatars/images/{filename}"

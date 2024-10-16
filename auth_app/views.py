@@ -1,4 +1,6 @@
 import json
+import os
+
 
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
@@ -11,6 +13,7 @@ from rest_framework.views import APIView
 
 from auth_app.models import Profile, Avatar
 from auth_app.serializers import ProfileSerializer
+from python_django_diploma.settings import MEDIA_URL
 
 
 class LoginApiView(APIView):
@@ -67,6 +70,7 @@ class ProfileView(APIView):
         data = request.data
 
         # del data['avatar']
+        data.pop("avatar")
         print(f"{data=}")
         profile: Profile = Profile.objects.update(**data)
 
@@ -83,8 +87,17 @@ class ProfileAvatarView(APIView):
         print(f"{avatar=}")
         profile = Profile.objects.get(user=request.user)
         avatar: Avatar = Avatar.objects.create(src=avatar)
+        old_avatar_src = None
+        if profile.avatar:
+            # Can't load MEDIA_URL from django.conf. settings
+            old_avatar_src = MEDIA_URL + str(profile.avatar.src)
         profile.avatar = avatar
         profile.save()
+        if old_avatar_src:
+            try:
+                os.remove(old_avatar_src)
+            except OSError as e:
+                print("Error removing file: {}".format(e))
         return Response(status=status.HTTP_200_OK)
 
 
