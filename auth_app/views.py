@@ -4,9 +4,13 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from auth_app.models import Profile
+from auth_app.serializers import ProfileSerializer
 
 
 class LoginApiView(APIView):
@@ -44,4 +48,33 @@ class LogoutView(APIView):
     def post(self, request: Request) -> Response:
         logout(request)
         return Response(status=status.HTTP_200_OK)
+
+
+class ProfileView(APIView):
+    @extend_schema(tags=["profile"], responses=ProfileSerializer)
+    def get(self, request: Request) -> Response:
+        queryset = Profile.objects.get(user=request.user)
+        serializer = ProfileSerializer(queryset, many=False)
+        return Response(serializer.data)
+
+    @extend_schema(tags=["profile"])
+    def post(self, request: Request) -> Response:
+        print(f"{request.data=}")
+        # profile = Profile.objects.update(**request.data)
+        # TODO DO Serialize
+        # serializer = ProfileSerializer(profile, many=False)
+        # return Response(serializer.data)
+        data = request.data
+
+        del data['avatar']
+        print(f"{data=}")
+        profile: Profile = Profile.objects.update(**data)
+
+        serializer = ProfileSerializer(profile, many=False)
+        return Response(serializer.data)
+        # return Response(status=status.HTTP_200_OK)
+
+
+
+
 
