@@ -1,24 +1,36 @@
 from rest_framework import serializers
 
-from basket_app.models import Order
+from basket_app.models import Order, Basket
 
 
-class OrderProductSerializer(serializers.Serializer):
-    id = serializers.IntegerField(source="product")
+class OrderProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+        )
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
-            "createdAt",
-            "fullName",
-            "email",
-            "deliveryType",
-            "paymentType",
-            "totalCost",
-            "status",
-            "city",
-            "address",
-            "products",
+            "id",
+            # "createdAt",
+            # "fullName",
+            # "email",
+            # "deliveryType",
+            # "paymentType",
+            # "totalCost",
+            # "status",
+            # "city",
+            # "address",
+            # "products",
         )
+
+
+class BasketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Basket
+        fields = ("id",)
+

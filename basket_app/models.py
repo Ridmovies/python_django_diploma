@@ -1,9 +1,18 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from product_app.models import Product
 
 
+class Basket(models.Model):
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} basket"
+
+
 class Order(models.Model):
+    # Оформление заказа
     createdAt = models.DateTimeField(auto_now_add=True)
     # example: 2023 - 05 - 05 12: 12
     fullName = models.CharField(max_length=128)
@@ -22,4 +31,5 @@ class Order(models.Model):
 class OrderProduct(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.PROTECT)
     quantity = models.IntegerField()
-    order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="products")
+    basket = models.ForeignKey(to=Basket, on_delete=models.CASCADE, related_name="products", null=True)
+    # order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="products", null=True)

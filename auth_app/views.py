@@ -44,6 +44,8 @@ class SignUpApiView(APIView):
 
         user = User.objects.create_user(username=username, password=password)
         login(request, user)
+
+        # TODO DO auto creating Basket for user
         return Response(status=status.HTTP_200_OK)
 
 
