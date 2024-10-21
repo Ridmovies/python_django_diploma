@@ -47,6 +47,7 @@ class SignUpApiView(APIView):
         login(request, user)
 
         Basket.objects.create(user=request.user)
+        Profile.objects.create(user=request.user)
 
         return Response(status=status.HTTP_200_OK)
 
