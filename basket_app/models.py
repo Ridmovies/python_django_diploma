@@ -13,6 +13,7 @@ class Basket(models.Model):
 
 class Order(models.Model):
     # Оформление заказа
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     createdAt = models.DateTimeField(auto_now_add=True)
     # example: 2023 - 05 - 05 12: 12
     fullName = models.CharField(max_length=128, null=True)

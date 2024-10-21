@@ -1,3 +1,5 @@
+import datetime
+
 from rest_framework import serializers
 
 from basket_app.models import Order, Basket, OrderProduct, Payment
@@ -54,6 +56,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     products = OrderProductSerializer(data="products", many=True)
+    createdAt = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -70,6 +73,10 @@ class OrderSerializer(serializers.ModelSerializer):
             "address",
             "products",
         )
+
+    def get_createdAt(self, instance) -> str:
+        # example: 2023 - 05 - 05 12: 12
+        return datetime.datetime.strftime(instance.createdAt, '%Y-%m-%d %H:%M')
 
 
 class BasketSerializer(serializers.ModelSerializer):

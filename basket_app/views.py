@@ -28,7 +28,7 @@ class BasketView(APIView):
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def get(self, request: Request) -> Response:
         basket: Basket = Basket.objects.get(user=request.user)
-        products: OrderProduct = OrderProduct.objects.all()
+        products: OrderProduct = OrderProduct.objects.filter(basket=basket)
         serializer = OrderProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -51,7 +51,7 @@ class OrdersListView(APIView):
     def post(self, request: Request) -> Response:
         # Создание заказа
         basket: Basket = Basket.objects.get(user=request.user)
-        new_order: Order = Order.objects.create()
+        new_order: Order = Order.objects.create(user=request.user)
         new_order.totalCost = 0
 
         for product in request.data:
@@ -74,7 +74,7 @@ class OrdersListView(APIView):
 
     @extend_schema(tags=["order"])
     def get(self, request: Request) -> Response:
-        order: Order = Order.objects.all()
+        order: Order = Order.objects.filter(user=request.user)
         serializer = OrderSerializer(order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -124,8 +124,6 @@ class OrderDetailView(APIView):
 class PaymentView(APIView):
     @extend_schema(tags=["payment"])
     def post(self, request: Request, id:int) -> Response:
-        print("payment 3333333333333333333333333333333333")
-        print(f"{request.data=}")
         order = Order.objects.get(id=id)
         data: dict = request.data
         credit_number = data.get("number", None)
@@ -136,7 +134,6 @@ class PaymentView(APIView):
         order.status = 'Оплачено'
         order.save()
         return Response(status=status.HTTP_200_OK)
-        # return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

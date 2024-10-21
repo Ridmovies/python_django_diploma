@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 
 from auth_app.models import Profile, Avatar
 from auth_app.serializers import ProfileSerializer
+from basket_app.models import Basket
 from python_django_diploma.settings import MEDIA_URL
 
 
@@ -45,7 +46,8 @@ class SignUpApiView(APIView):
         user = User.objects.create_user(username=username, password=password)
         login(request, user)
 
-        # TODO DO auto creating Basket for user
+        Basket.objects.create(user=request.user)
+
         return Response(status=status.HTTP_200_OK)
 
 
