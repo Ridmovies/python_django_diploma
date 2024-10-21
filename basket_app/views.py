@@ -6,8 +6,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from basket_app.models import OrderProduct, Basket, Order
-from basket_app.serializers import BasketSerializer, OrderProductSerializer, OrderSerializer
+from basket_app.models import OrderProduct, Basket, Order, Payment
+from basket_app.serializers import BasketSerializer, OrderProductSerializer, OrderSerializer, PaymentSerializer
 from product_app.models import Product
 
 
@@ -88,7 +88,7 @@ class OrderDetailView(APIView):
         data: dict = request.data
         order: Order = Order.objects.get(id=order.id)
         order.fullName = data['fullName']
-        order.phone = data['phone']
+        order.phone = data.get('phone', None)
         order.email = data['email']
         order.city = data['city']
         order.address = data['address']
@@ -118,50 +118,25 @@ class OrderDetailView(APIView):
         order.email = "test@email.com"
 
         serializer = OrderSerializer(order, many=False)
-        # data = {
-        #     "id": 123,
-        #     "createdAt": "2023-05-05 12:12",
-        #     "fullName": "Annoying Orange",
-        #     "email": "no-reply@mail.ru",
-        #     "phone": "88002000600",
-        #     "deliveryType": "free",
-        #     "paymentType": "online",
-        #     "totalCost": 567.8,
-        #     "status": "accepted",
-        #     "city": "Moscow",
-        #     "address": "red square 1",
-        #     "products": [
-        #         {
-        #             "id": 123,
-        #             "category": 55,
-        #             "price": 500.67,
-        #             "count": 12,
-        #             "date": "Thu Feb 09 2023 21:39:52 GMT+0100 (Central European Standard Time)",
-        #             "title": "video card",
-        #             "description": "description of the product",
-        #             "freeDelivery": True,
-        #             "images": [
-        #                 {
-        #                     "src": "/3.png",
-        #                     "alt": "Image alt string"
-        #                 }
-        #             ],
-        #             "tags": [
-        #                 {
-        #                     "id": 12,
-        #                     "name": "Gaming"
-        #                 }
-        #             ],
-        #             "reviews": 5,
-        #             "rating": 4.6
-        #         }
-        #     ]
-        # }
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-        # return JsonResponse(data=data, safe=True)
 
 
 class PaymentView(APIView):
     @extend_schema(tags=["payment"])
     def post(self, request: Request, id:int) -> Response:
+        print("payment 3333333333333333333333333333333333")
+        print(f"{request.data=}")
+        order = Order.objects.get(id=id)
+        data: dict = request.data
+        credit_number = data.get("number", None)
+        payment: Payment = Payment.objects.create(**data)
+        print(f"{payment=}")
+        serializer = PaymentSerializer(payment, many=False)
+        # TODO DO validation
+        order.status = 'Оплачено'
+        order.save()
         return Response(status=status.HTTP_200_OK)
+        # return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+

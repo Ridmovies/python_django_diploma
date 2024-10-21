@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from basket_app.models import Order, Basket, OrderProduct
+from basket_app.models import Order, Basket, OrderProduct, Payment
+from basket_app.validators import CreditCardValidator
 from product_app.models import Product
 from product_app.serializers import ImageSerializer, TagSerializer, ReviewSerializer
 
@@ -75,4 +76,20 @@ class BasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Basket
         fields = ("id",)
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    number = serializers.CharField(
+        validators=[CreditCardValidator(ends_with_odd_digit=True)],
+    )
+
+    class Meta:
+        model = Payment
+        fields = (
+            'number',
+            'name',
+            'month',
+            'year',
+            'code',
+        )
 
