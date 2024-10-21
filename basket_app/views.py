@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order, Payment
 from basket_app.serializers import BasketSerializer, OrderProductSerializer, OrderSerializer, PaymentSerializer
 from product_app.models import Product
@@ -18,7 +19,9 @@ class BasketView(APIView):
         product_id = request.data.get("id", None)
         count = request.data.get("count", None)
         basket: Basket = Basket.objects.get(user=request.user)
-        order_product = OrderProduct.objects.create(
+
+        # TODO FIX ADD to cart
+        order_product = OrderProduct.objects.get_or_create(
             product_id=product_id,
             quantity=count,
             basket=basket,
@@ -34,12 +37,17 @@ class BasketView(APIView):
 
     @extend_schema(tags=["basket"])
     def delete(self, request: Request) -> Response:
+        basket: Basket = Basket.objects.get(user=request.user)
+        order: Order = Order.objects.filter(user=request.user)
         product_id = request.data.get("id")
         quantity = request.data.get("count")
         order_product: OrderProduct = OrderProduct.objects.get(
             product_id=product_id,
             quantity=quantity,
+            basket=basket,
+            # order=order,
         )
+        print(order_product)
 
         if order_product:
             order_product.delete()
@@ -111,11 +119,10 @@ class OrderDetailView(APIView):
 
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def get(self, request: Request, id:int) -> Response:
-        print("order get 11111111111111")
-        print(f"{request.data=}")
         order = Order.objects.get(id=id)
-        # TODO Hardcore
-        order.email = "test@email.com"
+        profile: Profile = Profile.objects.get(user=request.user)
+        order.email = profile.email
+        order.phone = profile.phone
 
         serializer = OrderSerializer(order, many=False)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
