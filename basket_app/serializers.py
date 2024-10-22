@@ -65,6 +65,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "createdAt",
             "fullName",
             "email",
+            "phone",
             "deliveryType",
             "paymentType",
             "totalCost",

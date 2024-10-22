@@ -6,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.generics import ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -52,7 +52,9 @@ class SignUpApiView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class LogoutView(APIView):
+class LogoutView(generics.GenericAPIView):
+    serializer_class = None
+
     @extend_schema(tags=["auth"])
     def post(self, request: Request) -> Response:
         logout(request)
