@@ -129,7 +129,12 @@ MEDIA_URL = 'media/'
 # Root folder for media
 MEDIA_ROOT = BASE_DIR / 'media/'
 
+
+# My settings
 PAGE_SIZE = 2
+BANNERS_AMOUNT = 2
+POPULAR_RATING = 4
+LIMITED_COUNT = 5
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

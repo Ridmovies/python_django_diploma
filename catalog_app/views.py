@@ -2,6 +2,13 @@ from rest_framework import generics
 from drf_spectacular.utils import extend_schema
 from rest_framework.filters import SearchFilter
 
+from python_django_diploma.settings import (
+    BANNERS_AMOUNT,
+    POPULAR_RATING,
+    LIMITED_COUNT,
+)
+
+
 from catalog_app.filters import (
     TagFilterBackend,
     FreeDeliveryFilterBackend,
@@ -20,19 +27,19 @@ from product_app.serializers import ProductFullSerializer
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)
 class PopularProductsListApi(generics.ListAPIView):
-    queryset = Product.objects.filter(rating__gte=4)
+    queryset = Product.objects.filter(rating__gte=POPULAR_RATING)
     serializer_class = ProductFullSerializer
 
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)
 class LimitedProductsListApi(generics.ListAPIView):
-    queryset = Product.objects.filter(count__lte=5)
+    queryset = Product.objects.filter(count__lte=LIMITED_COUNT)
     serializer_class = ProductFullSerializer
 
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)
 class BannerListApi(generics.ListAPIView):
-    queryset = Product.objects.all()[:1]
+    queryset = Product.objects.all().order_by('?')[:BANNERS_AMOUNT]
     serializer_class = ProductFullSerializer
 
 
