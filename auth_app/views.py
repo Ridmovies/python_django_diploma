@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, generics
 from rest_framework.generics import ListAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -43,13 +44,16 @@ class SignUpApiView(APIView):
         username = decoded_data["username"]
         password = decoded_data["password"]
 
-        user = User.objects.create_user(username=username, password=password)
-        login(request, user)
+        try:
+            user = User.objects.create_user(username=username, password=password)
+            login(request, user)
 
-        Basket.objects.create(user=request.user)
-        Profile.objects.create(user=request.user)
+            Basket.objects.create(user=request.user)
+            Profile.objects.create(user=request.user)
 
-        return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_201_CREATED)
+        except ValueError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutView(generics.GenericAPIView):
@@ -61,12 +65,20 @@ class LogoutView(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class ProfileView(APIView):
-    @extend_schema(tags=["profile"], responses=ProfileSerializer)
-    def get(self, request: Request) -> Response:
-        queryset = Profile.objects.get(user=request.user)
-        serializer = ProfileSerializer(queryset, many=False)
-        return Response(serializer.data)
+# class ProfileView(APIView):
+#     @extend_schema(tags=["profile"], responses=ProfileSerializer)
+#     def get(self, request: Request) -> Response:
+#         queryset = Profile.objects.get(user=request.user)
+#         serializer = ProfileSerializer(queryset, many=False)
+#         return Response(serializer.data)
+
+class ProfileView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # Получаем профиль текущего пользователя
+        return Profile.objects.get(user=self.request.user)
 
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
