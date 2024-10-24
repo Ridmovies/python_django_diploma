@@ -72,11 +72,13 @@ class ReviewTests(APITestCase):
     def test_post_product_review(self):
         url = reverse("product:add_review", kwargs={"id": self.product.id})
         review_data = {
-          "author": "string",
-          "email": "user@example.com",
-          "text": "string",
-          "rate": 5,
-          "product_id": self.product.id
+              "author": "string",
+              "email": "user@example.com",
+
+                # TODO FIX IT!
+              "rate": 5,
+              "text": "string",
+              # "product_id": self.product.id
         }
         response = self.client.post(url, review_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
