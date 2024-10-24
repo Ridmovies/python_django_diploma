@@ -32,6 +32,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
 
 # Application definition
 
@@ -46,6 +51,8 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'drf_spectacular',
+    "debug_toolbar",
+
     'product_app.apps.ProductAppConfig',
     'catalog_app.apps.CatalogAppConfig',
     'auth_app.apps.AuthAppConfig',
@@ -53,6 +60,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
