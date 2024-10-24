@@ -46,7 +46,7 @@ class SpecificationSerializer(serializers.ModelSerializer):
 
 
 class ProductFullSerializer(serializers.ModelSerializer):
-    images = ImageSerializer(many=True)
+    images = ImageSerializer(many=True, required=True)
     tags = TagSerializer(many=True, required=False)
     reviews = ReviewSerializer(many=True, required=False)
     specifications = SpecificationSerializer(many=True, required=False)

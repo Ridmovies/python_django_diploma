@@ -5,8 +5,8 @@ from django.db import models
 
 class Product(models.Model):
     title = models.CharField(max_length=30)
-    description = models.TextField(null=True)
-    fullDescription = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
+    fullDescription = models.TextField(null=True, blank=True)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     freeDelivery = models.BooleanField(default=True)
     # TODO Create dynamic count

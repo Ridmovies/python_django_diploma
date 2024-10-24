@@ -8,10 +8,10 @@ def avatar_image_directory_path(instance: "Avatar", filename: str) -> str:
 
 class Profile(models.Model):
     user = models.OneToOneField(to=User, on_delete=models.CASCADE, primary_key=True)
-    fullName = models.CharField(max_length=128, null=True)
-    email = models.EmailField(null=True)
-    phone = models.CharField(max_length=12, null=True)
-    avatar = models.OneToOneField(to="Avatar", on_delete=models.CASCADE, null=True)
+    fullName = models.CharField(max_length=128, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    phone = models.CharField(max_length=12, null=True, blank=True)
+    avatar = models.OneToOneField(to="Avatar", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} profile"
