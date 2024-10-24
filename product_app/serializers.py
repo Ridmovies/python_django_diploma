@@ -19,7 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     date = serializers.SerializerMethodField()
-    product_id = serializers.IntegerField(default=1, write_only=True)
+    product_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Review
