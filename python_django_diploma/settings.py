@@ -149,6 +149,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
+
+LOGIN_URL = '/sign-up'
+LOGIN_REDIRECT_URL = '/profiles/home'
 # Root folder for media
 MEDIA_ROOT = BASE_DIR / 'media/'
 

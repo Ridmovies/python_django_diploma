@@ -1,4 +1,6 @@
-from django.http import JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ImproperlyConfigured
+from django.http import JsonResponse, HttpResponseRedirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.request import Request
@@ -8,24 +10,24 @@ from rest_framework.views import APIView
 from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order, Payment
 from basket_app.serializers import OrderProductSerializer, OrderSerializer, PaymentSerializer
+from basket_app.services import get_or_create_basket
 from product_app.models import Product
+from python_django_diploma import settings
 
 
 class BasketView(APIView):
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def get(self, request: Request) -> Response:
-        if request.user.is_authenticated:
-            basket: Basket = Basket.objects.get(user=request.user)
-            products: OrderProduct = OrderProduct.objects.filter(basket=basket)
-            serializer = OrderProductSerializer(products, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_200_OK)
+        basket: Basket = get_or_create_basket(request)
+        products: OrderProduct = OrderProduct.objects.filter(basket=basket)
+        serializer = OrderProductSerializer(products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(tags=["basket"])
     def post(self, request: Request) -> Response:
         product_id = request.data.get("id", None)
         count = request.data.get("count", None)
-        basket: Basket = Basket.objects.get(user=request.user)
+        basket: Basket = get_or_create_basket(request)
         try:
             product_exist = OrderProduct.objects.get(product_id=product_id, basket=basket)
         except OrderProduct.DoesNotExist:
@@ -53,11 +55,13 @@ class BasketView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class OrdersListView(APIView):
+class OrdersListView(LoginRequiredMixin, APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request) -> Response:
+
         # Создание заказа
         basket: Basket = Basket.objects.get(user=request.user)
+        # basket: Basket = get_or_create_basket(request)
         new_order: Order = Order.objects.create(user=request.user)
         new_order.totalCost = 0
 
@@ -91,10 +95,18 @@ class OrdersListView(APIView):
         serializer = OrderSerializer(order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+    def get_login_url(self):
+        """
+        Override this method to override the login_url attribute.
+        """
+        login_url = self.login_url or settings.LOGIN_URL
+        print("111111111111111111111111111111")
+        return login_url
 
-class OrderDetailView(APIView):
+
+class OrderDetailView(LoginRequiredMixin, APIView):
     @extend_schema(tags=["order"])
-    def post(self, request: Request, id:int) -> JsonResponse:
+    def post(self, request: Request, id:int) -> Response:
         order = Order.objects.get(id=id)
         if order.status == 'Оплачено':
             return Response(status=status.HTTP_409_CONFLICT)
@@ -130,7 +142,7 @@ class OrderDetailView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class PaymentView(APIView):
+class PaymentView(LoginRequiredMixin, APIView):
     @extend_schema(tags=["payment"])
     def post(self, request: Request, id:int) -> Response:
         basket: Basket = Basket.objects.get(user=request.user)

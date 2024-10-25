@@ -5,7 +5,8 @@ from product_app.models import Product
 
 
 class Basket(models.Model):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=True)
+    session_key = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} basket"
@@ -26,7 +27,6 @@ class Order(models.Model):
     status = models.CharField(max_length=12, null=True)
     city = models.CharField(max_length=24, null=True)
     address = models.CharField(max_length=64, null=True)
-    # products =
 
 
 class OrderProduct(models.Model):
