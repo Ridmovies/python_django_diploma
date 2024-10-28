@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order, Payment
 from basket_app.serializers import OrderProductSerializer, OrderSerializer, PaymentSerializer
-from basket_app.services import get_or_create_basket
+from basket_app.services import get_or_create_basket, cancel_order_product
 from product_app.models import Product
 from python_django_diploma import settings
 
@@ -25,22 +25,28 @@ class BasketView(APIView):
 
     @extend_schema(tags=["basket"])
     def post(self, request: Request) -> Response:
+        # ADD TO CART
         product_id = request.data.get("id", None)
-        count = request.data.get("count", None)
+        count: str = request.data.get("count", None)
         basket: Basket = get_or_create_basket(request)
-        try:
-            product_exist = OrderProduct.objects.get(product_id=product_id, basket=basket)
-        except OrderProduct.DoesNotExist:
-            pass
-        else:
-            product_exist.delete()
+        product: Product = Product.objects.get(id=product_id)
+        if not (int(count) <= product.count):
+            return Response({"message": f"You can order only {product.count}"},
+                            status=status.HTTP_409_CONFLICT)
 
-        order_product = OrderProduct.objects.create(
+        product_order, created = OrderProduct.objects.get_or_create(
             product_id=product_id,
-            quantity=count,
             basket=basket,
         )
-        return Response(status=status.HTTP_200_OK)
+        if created:
+            product_order.quantity = count
+            product_order.save()
+            product.count -= int(count)
+            product.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "Product already in basket"},
+                            status=status.HTTP_409_CONFLICT)
 
     @extend_schema(tags=["basket"])
     def delete(self, request: Request) -> Response:
@@ -51,11 +57,12 @@ class BasketView(APIView):
             basket=basket,
         )
         if order_product:
-            order_product.delete()
+            cancel_order_product(order_product, product_id)
+
         return Response(status=status.HTTP_200_OK)
 
 
-class OrdersListView(LoginRequiredMixin, APIView):
+class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request) -> Response:
 
@@ -95,16 +102,8 @@ class OrdersListView(LoginRequiredMixin, APIView):
         serializer = OrderSerializer(order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    def get_login_url(self):
-        """
-        Override this method to override the login_url attribute.
-        """
-        login_url = self.login_url or settings.LOGIN_URL
-        print("111111111111111111111111111111")
-        return login_url
 
-
-class OrderDetailView(LoginRequiredMixin, APIView):
+class OrderDetailView(APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request, id:int) -> Response:
         order = Order.objects.get(id=id)
@@ -142,7 +141,7 @@ class OrderDetailView(LoginRequiredMixin, APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class PaymentView(LoginRequiredMixin, APIView):
+class PaymentView(APIView):
     @extend_schema(tags=["payment"])
     def post(self, request: Request, id:int) -> Response:
         basket: Basket = Basket.objects.get(user=request.user)

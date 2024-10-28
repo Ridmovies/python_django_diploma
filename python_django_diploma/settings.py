@@ -150,14 +150,14 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 
-LOGIN_URL = '/sign-up'
+LOGIN_URL = '/sign-in/'
 LOGIN_REDIRECT_URL = '/profiles/home'
 # Root folder for media
 MEDIA_ROOT = BASE_DIR / 'media/'
 
 
 # My settings
-PAGE_SIZE = 2
+PAGE_SIZE = 20
 BANNERS_AMOUNT = 2
 POPULAR_RATING = 4
 LIMITED_COUNT = 5

@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter
 
 
 class CustomOrdering(OrderingFilter):
-    def get_ordering(self, request, queryset, view) -> str:
+    def get_ordering(self, request, queryset, view) -> list:
 
         sorting_by = request.query_params.get('sort', None)
         sorting_type = request.query_params.get('sortType', None)

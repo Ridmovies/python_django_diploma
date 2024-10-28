@@ -63,6 +63,7 @@ class CatalogView(generics.ListAPIView):
     pagination_class = CustomPagination
     search_fields = ['title']
     filter_backends = [
+        # TODO FIX duplicate
         CustomOrdering,
         SearchFilter,
         TagFilterBackend,
@@ -72,3 +73,6 @@ class CatalogView(generics.ListAPIView):
         MaxPriceFilterBackend,
         CategoryFilterBackend,
     ]
+
+    # def get_queryset(self):
+    #     return super().get_queryset().distinct()
