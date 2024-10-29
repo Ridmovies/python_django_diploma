@@ -104,7 +104,7 @@ class OrdersListView(APIView):
 
 
 class OrderDetailView(APIView):
-    @extend_schema(tags=["order"])
+    @extend_schema(tags=["order"], responses=OrderSerializer)
     def post(self, request: Request, id:int) -> Response:
         order = Order.objects.get(id=id)
         if order.status == 'Оплачено':
@@ -129,8 +129,10 @@ class OrderDetailView(APIView):
             order.deliveryType = data['deliveryType']
         else:
             order.deliveryType = 'standard'
-
         order.save()
+
+        # serializer = OrderSerializer(order, many=False)
+        # return Response(data=serializer.data, status=status.HTTP_200_OK)
         return JsonResponse({"orderId": order.id})
 
     @extend_schema(tags=["order"], responses=OrderSerializer)

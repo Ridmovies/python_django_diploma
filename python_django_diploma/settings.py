@@ -48,11 +48,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'frontend',
+    # Frontend as installed pack
+    # 'frontend',
     'rest_framework',
     'drf_spectacular',
     "debug_toolbar",
 
+    'frontend.apps.FrontendConfig',
     'product_app.apps.ProductAppConfig',
     'catalog_app.apps.CatalogAppConfig',
     'auth_app.apps.AuthAppConfig',

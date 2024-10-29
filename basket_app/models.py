@@ -24,7 +24,7 @@ class Order(models.Model):
     paymentType = models.CharField(max_length=12, null=True)
     totalCost = models.FloatField(null=True)
     # example: 567.8
-    status = models.CharField(max_length=12, null=True)
+    status = models.CharField(max_length=24, null=True)
     city = models.CharField(max_length=24, null=True)
     address = models.CharField(max_length=64, null=True)
 
