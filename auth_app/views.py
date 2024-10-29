@@ -65,13 +65,6 @@ class LogoutView(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
-# class ProfileView(APIView):
-#     @extend_schema(tags=["profile"], responses=ProfileSerializer)
-#     def get(self, request: Request) -> Response:
-#         queryset = Profile.objects.get(user=request.user)
-#         serializer = ProfileSerializer(queryset, many=False)
-#         return Response(serializer.data)
-
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
@@ -82,21 +75,12 @@ class ProfileView(generics.RetrieveAPIView):
 
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        print(f"{request.data=}")
-        # profile = Profile.objects.update(**request.data)
-        # TODO DO Serialize
-        # serializer = ProfileSerializer(profile, many=False)
-        # return Response(serializer.data)
         data = request.data
-
-        # del data['avatar']
         data.pop("avatar")
-        print(f"{data=}")
         profile: Profile = Profile.objects.update(**data)
 
         serializer = ProfileSerializer(profile, many=False)
         return Response(serializer.data)
-        # return Response(status=status.HTTP_200_OK)
 
 
 class ProfileAvatarView(APIView):

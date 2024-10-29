@@ -8,7 +8,6 @@ from python_django_diploma.settings import (
     LIMITED_COUNT,
 )
 
-
 from catalog_app.filters import (
     TagFilterBackend,
     FreeDeliveryFilterBackend,
