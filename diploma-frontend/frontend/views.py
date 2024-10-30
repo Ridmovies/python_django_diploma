@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import View
 
-from basket_app.payment import get_confirmation_url
+from payment_app.payment import get_confirmation_url
 
 
 class PaymentYooKassaView(View):

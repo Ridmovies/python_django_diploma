@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     "debug_toolbar",
 
+    'payment_app.apps.PaymentAppConfig',
     'frontend.apps.FrontendConfig',
     'product_app.apps.ProductAppConfig',
     'catalog_app.apps.CatalogAppConfig',

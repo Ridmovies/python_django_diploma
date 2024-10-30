@@ -1,10 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import View
-from rest_framework.request import Request
 
 from basket_app.models import Order
-from basket_app.payment import get_confirmation_url
+from payment_app.payment import get_confirmation_url
 
 
 class PaymentYooKassaView(View):
@@ -18,7 +17,7 @@ class PaymentYooKassaView(View):
         return redirect(get_confirmation_url(value, description))
 
 
-class PaymentSucces(View):
+class PaymentSuccess(View):
     def get(self, request) -> HttpResponse:
         print(f"{request=}")
         return redirect('http://127.0.0.1:8000/')

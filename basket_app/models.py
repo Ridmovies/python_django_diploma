@@ -37,11 +37,3 @@ class OrderProduct(models.Model):
     order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="products", null=True)
 
 
-class Payment(models.Model):
-    # Todo add validators
-    number = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    month = models.CharField(max_length=30)
-    year = models.CharField(max_length=30)
-    code = models.CharField(max_length=30)
-

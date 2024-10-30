@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from auth_app.models import Profile
-from basket_app.models import OrderProduct, Basket, Order, Payment
-from basket_app.serializers import OrderProductSerializer, OrderSerializer, PaymentSerializer
+from basket_app.models import OrderProduct, Basket, Order
+from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import get_or_create_basket, cancel_order_product
 from product_app.models import Product
 from python_django_diploma import settings
@@ -143,25 +143,7 @@ class OrderDetailView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class PaymentView(APIView):
-    @extend_schema(tags=["payment"])
-    def post(self, request: Request, id:int) -> Response:
-        basket: Basket = Basket.objects.get(user=request.user)
-        order = Order.objects.get(id=id)
-        data: dict = request.data
-        credit_number = data.get("number", None)
-        payment: Payment = Payment.objects.create(**data)
-        order.status = 'Ожидает оплаты'
-        serializer = PaymentSerializer(payment, many=False)
-        if credit_number[-1] != "0":
-            # TODO DO validation
-            order.status = 'Оплачено'
-        elif credit_number[-1] == "0":
-            order.status = 'Ошибка оплаты'
-        basket.products.clear()
-        basket.save()
-        order.save()
-        return Response(status=status.HTTP_200_OK)
+
 
 
 
