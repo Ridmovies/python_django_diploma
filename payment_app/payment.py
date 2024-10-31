@@ -6,8 +6,6 @@ from rest_framework.response import Response
 from yookassa import Payment, Configuration
 import uuid
 
-# Configuration.account_id = "482541"
-# Configuration.secret_key = "test_UR6XrxqsPiSVecyqR5R4EZHPQtRhBYd1UYvHXUu2HJs"
 
 load_dotenv()
 Configuration.account_id = os.getenv('ACCOUNT_ID')

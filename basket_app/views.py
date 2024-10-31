@@ -23,7 +23,7 @@ class BasketView(APIView):
         serializer = OrderProductSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @extend_schema(tags=["basket"])
+    @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def post(self, request: Request) -> Response:
         # ADD TO CART
         product_id = request.data.get("id", None)
@@ -43,12 +43,13 @@ class BasketView(APIView):
             product_order.save()
             product.count -= int(count)
             product.save()
-            return Response(status=status.HTTP_200_OK)
+            serializer = OrderProductSerializer(basket.products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"message": "Product already in basket"},
                             status=status.HTTP_409_CONFLICT)
 
-    @extend_schema(tags=["basket"])
+    @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def delete(self, request: Request) -> Response:
         basket: Basket = Basket.objects.get(user=request.user)
         product_id = request.data.get("id")
@@ -59,7 +60,8 @@ class BasketView(APIView):
         if order_product:
             cancel_order_product(order_product, product_id)
 
-        return Response(status=status.HTTP_200_OK)
+        serializer = OrderProductSerializer(basket.products, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class OrdersListView(APIView):
