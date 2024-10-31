@@ -80,7 +80,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class BasketSerializer(serializers.ModelSerializer):
+    products = ProductShortSerializer(data="products", many=True)
+
     class Meta:
         model = Basket
-        fields = ("id",)
+        fields = ("products",)
 

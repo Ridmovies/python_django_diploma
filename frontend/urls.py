@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 
-from frontend.views import PaymentYooKassaView, PaymentSuccess
+from frontend.views import PaymentYooKassaView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name="frontend/index.html")),
@@ -14,7 +14,6 @@ urlpatterns = [
     path('orders/<int:id>/', TemplateView.as_view(template_name="frontend/order.html")),
     # path('payment/<int:id>/', TemplateView.as_view(template_name="frontend/payment.html")),
     path('payment/<int:id>/', PaymentYooKassaView.as_view()),
-    path('payment/success/', PaymentSuccess.as_view()),
     path('payment-someone/', TemplateView.as_view(template_name="frontend/paymentsomeone.html")),
     path('product/<int:id>/', TemplateView.as_view(template_name="frontend/product.html")),
     path('profile/', TemplateView.as_view(template_name="frontend/profile.html")),

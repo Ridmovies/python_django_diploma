@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order
-from basket_app.serializers import OrderProductSerializer, OrderSerializer
+from basket_app.serializers import OrderProductSerializer, OrderSerializer, BasketSerializer, ProductShortSerializer
 from basket_app.services import get_or_create_basket, cancel_order_product
 from product_app.models import Product
 from python_django_diploma import settings
@@ -98,7 +98,7 @@ class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def get(self, request: Request) -> Response:
         # TODO Clean not active orders
-        order: Order = Order.objects.filter(user=request.user, status__isnull=False)
+        order: Order = Order.objects.filter(user=request.user, status__isnull=False).order_by("-createdAt")
         serializer = OrderSerializer(order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -130,6 +130,10 @@ class OrderDetailView(APIView):
         else:
             order.deliveryType = 'standard'
         order.save()
+
+        basket: Basket = Basket.objects.get(user=request.user)
+        basket.products.clear()
+        # order.save()
 
         # serializer = OrderSerializer(order, many=False)
         # return Response(data=serializer.data, status=status.HTTP_200_OK)

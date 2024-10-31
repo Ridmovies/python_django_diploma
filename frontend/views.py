@@ -13,11 +13,5 @@ class PaymentYooKassaView(View):
         order: Order = Order.objects.get(id=id)
         value: str = str(order.totalCost * exchange_rate)
         description: str = f"Order #{id}"
-        print(f"{order.totalCost=}")
-        return redirect(get_confirmation_url(value, description))
+        return redirect(get_confirmation_url(value, description, order_id=id))
 
-
-class PaymentSuccess(View):
-    def get(self, request) -> HttpResponse:
-        print(f"{request=}")
-        return redirect('http://127.0.0.1:8000/')
