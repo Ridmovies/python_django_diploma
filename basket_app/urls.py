@@ -6,8 +6,10 @@ from basket_app.views import (
     OrderDetailView,
 )
 
+app_name = "basket_app"
+
 urlpatterns = [
-    path("basket", BasketView.as_view()),
-    path("orders", OrdersListView.as_view()),
-    path("order/<int:id>", OrderDetailView.as_view()),
+    path("basket", BasketView.as_view(), name="basket"),
+    path("orders", OrdersListView.as_view(), name="orders"),
+    path("order/<int:id>", OrderDetailView.as_view(), name="order_detail"),
 ]

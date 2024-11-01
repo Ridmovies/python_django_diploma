@@ -75,12 +75,10 @@ class ReviewTests(APITestCase):
               "author": "string",
               "email": "user@example.com",
 
-                # TODO FIX IT!
-              "rate": 5,
+              "rate": 4,
               "text": "string",
-              # "product_id": self.product.id
         }
-        response = self.client.post(url, review_data)
+        response = self.client.post(url, review_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Review.objects.count(), 1)
 

@@ -41,9 +41,10 @@ class OrderProductSerializer(serializers.ModelSerializer):
             "quantity",
         )
 
+    # TODO Change it
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        product = Product.objects.get(id=representation['product_id'])  # Получаем продукт по id
+        product = Product.objects.get(id=representation['product_id'])
         product_serializer = ProductShortSerializer(product)
 
         # Объединяем данные продукта и количество

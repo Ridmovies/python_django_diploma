@@ -86,9 +86,7 @@ class ProfileView(generics.RetrieveAPIView):
 class ProfileAvatarView(APIView):
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        print(f"{request.data=}")
         avatar = request.FILES["avatar"]
-        print(f"{avatar=}")
         profile = Profile.objects.get(user=request.user)
         avatar: Avatar = Avatar.objects.create(src=avatar)
         old_avatar_src = None

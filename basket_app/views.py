@@ -1,6 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ImproperlyConfigured
-from django.http import JsonResponse, HttpResponseRedirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.request import Request
@@ -9,10 +6,9 @@ from rest_framework.views import APIView
 
 from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order
-from basket_app.serializers import OrderProductSerializer, OrderSerializer, BasketSerializer, ProductShortSerializer
+from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import get_or_create_basket, cancel_order_product
 from product_app.models import Product
-from python_django_diploma import settings
 
 
 class BasketView(APIView):
@@ -31,7 +27,7 @@ class BasketView(APIView):
         basket: Basket = get_or_create_basket(request)
         product: Product = Product.objects.get(id=product_id)
         if not (int(count) <= product.count):
-            return Response({"message": f"You can order only {product.count}"},
+            return Response({"message": f"You can order only {product.count} products"},
                             status=status.HTTP_409_CONFLICT)
 
         product_order, created = OrderProduct.objects.get_or_create(
@@ -107,7 +103,7 @@ class OrdersListView(APIView):
 
 class OrderDetailView(APIView):
     @extend_schema(tags=["order"], responses=OrderSerializer)
-    def post(self, request: Request, id:int) -> Response:
+    def post(self, request: Request, id: int) -> Response:
         order = Order.objects.get(id=id)
         if order.status == 'Оплачено':
             return Response(status=status.HTTP_409_CONFLICT)
@@ -139,17 +135,12 @@ class OrderDetailView(APIView):
 
         # serializer = OrderSerializer(order, many=False)
         # return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse({"orderId": order.id})
+        # return JsonResponse({"orderId": order.id})
+        return Response({"orderId": order.id})
 
     @extend_schema(tags=["order"], responses=OrderSerializer)
-    def get(self, request: Request, id:int) -> Response:
+    def get(self, request: Request, id: int) -> Response:
         order = Order.objects.get(id=id)
 
         serializer = OrderSerializer(order, many=False)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-
-
-
-
-
