@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
-from basket_app.services import get_or_create_basket, cancel_order_product
+from basket_app.services import get_or_create_basket, cancel_order_product, update_order_info, create_new_order, \
+    add_products_in_order
 from product_app.models import Product
 
 
@@ -21,8 +22,7 @@ class BasketView(APIView):
 
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def post(self, request: Request) -> Response:
-        # ADD TO CART
-        product_id = request.data.get("id", None)
+        product_id: int = request.data.get("id", None)
         count: str = request.data.get("count", None)
         basket: Basket = get_or_create_basket(request)
         product: Product = Product.objects.get(id=product_id)
@@ -63,34 +63,10 @@ class BasketView(APIView):
 class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request) -> Response:
-
         # Создание заказа
         basket: Basket = Basket.objects.get(user=request.user)
-        # basket: Basket = get_or_create_basket(request)
-        new_order: Order = Order.objects.create(user=request.user)
-        new_order.totalCost = 0
-
-        profile: Profile = Profile.objects.get(user=request.user)
-        new_order.email = profile.email
-        new_order.phone = profile.phone
-        new_order.fullName = profile.fullName
-
-        for product in request.data:
-            product_id = product.get("id")
-            quantity = product.get("count")
-            order_product: OrderProduct = OrderProduct.objects.create(
-                product_id=product_id,
-                quantity=quantity,
-                basket=basket,
-                order=new_order,
-            )
-            new_order.products.add(order_product)
-            # Calculate Order's totalCost
-            product_price: float = Product.objects.get(id=product_id).price
-            products_cost: float = product_price * quantity
-            new_order.totalCost += products_cost
-
-        new_order.save()
+        new_order = create_new_order(request)
+        add_products_in_order(request, basket, new_order)
         return Response({"orderId": new_order.id}, status=status.HTTP_200_OK)
 
     @extend_schema(tags=["order"])
@@ -104,43 +80,16 @@ class OrdersListView(APIView):
 class OrderDetailView(APIView):
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def post(self, request: Request, id: int) -> Response:
-        order = Order.objects.get(id=id)
+        order: Order = Order.objects.get(id=id)
         if order.status == 'Оплачено':
             return Response(status=status.HTTP_409_CONFLICT)
-
-        data: dict = request.data
-        order: Order = Order.objects.get(id=order.id)
-        order.fullName = data['fullName']
-        order.phone = data.get('phone', None)
-        order.email = data['email']
-        order.city = data['city']
-        order.address = data['address']
-        order.status = 'Ожидает оплаты'
-        order.totalCost = data['totalCost']
-
-        if not data['paymentType']:
-            order.paymentType = 'online'
-        else:
-            order.paymentType = data['paymentType']
-
-        if data['deliveryType'] == 'express':
-            order.deliveryType = data['deliveryType']
-        else:
-            order.deliveryType = 'standard'
-        order.save()
-
+        update_order_info(request, order)
         basket: Basket = Basket.objects.get(user=request.user)
         basket.products.clear()
-        # order.save()
-
-        # serializer = OrderSerializer(order, many=False)
-        # return Response(data=serializer.data, status=status.HTTP_200_OK)
-        # return JsonResponse({"orderId": order.id})
         return Response({"orderId": order.id})
 
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def get(self, request: Request, id: int) -> Response:
         order = Order.objects.get(id=id)
-
         serializer = OrderSerializer(order, many=False)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

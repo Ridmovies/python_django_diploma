@@ -80,6 +80,7 @@ class ProfileView(generics.RetrieveAPIView):
         profile: Profile = Profile.objects.update(**data)
 
         serializer = ProfileSerializer(profile, many=False)
+        # TODO Проверить респонс
         return Response(serializer.data)
 
 
@@ -100,6 +101,7 @@ class ProfileAvatarView(APIView):
                 os.remove(old_avatar_src)
             except OSError as e:
                 print("Error removing file: {}".format(e))
+                # TODO Проверить респонс
         return Response(status=status.HTTP_200_OK)
 
 
