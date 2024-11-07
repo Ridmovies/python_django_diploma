@@ -12,8 +12,38 @@ def get_or_create_basket(request: Request):
         return basket
 
     elif request.user.is_anonymous:
+        # Сохранение сессии перед использованием сессионного ключа
+        request.session.modified = True
+        request.session.save()
+
         basket, _ = Basket.objects.get_or_create(session_key=request.session.session_key)
         return basket
+
+
+def add_product_to_basket(product_id, count, basket):
+    try:
+        product = Product.objects.get(id=product_id)
+    except Product.DoesNotExist:
+        raise ValueError(f'Product with ID {product_id} does not exist.')
+
+    if int(count) > product.count:
+        message = f'You can order only {product.count} products.'
+        raise Exception(message)
+
+    product_order, created = OrderProduct.objects.get_or_create(
+        product_id=product.id,
+        basket=basket
+    )
+
+    if created:
+        product_order.quantity = count
+        product_order.save()
+        product.count -= int(count)
+        product.save()
+    else:
+        raise RuntimeError('Product already in basket')
+
+    return product_order
 
 
 @transaction.atomic

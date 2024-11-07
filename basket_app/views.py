@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 
 from basket_app.models import OrderProduct, Basket, Order
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
@@ -80,3 +84,13 @@ class OrderDetailView(APIView):
         order = Order.objects.get(id=id)
         serializer = OrderSerializer(order, many=False)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+@extend_schema(tags=["order"], responses=OrderSerializer)
+class OldOrdersListView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Order.objects.filter(
+        createdAt__lt=datetime.now() - timedelta(days=3),
+        status="Ожидает оплаты"
+    )
+    serializer_class = OrderSerializer
