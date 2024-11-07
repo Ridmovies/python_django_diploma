@@ -127,18 +127,6 @@ else:
         }
     }
 
-# if os.getenv("DOCKER_RUNTIME"):
-#     # Если находимся в контейнере:
-#     DATABASE_URL = (
-#         f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-#     )
-# else:
-#     # Если приложение запущено локально
-#     DATABASE_URL = (
-#         f"postgresql+asyncpg://"
-#         f"{LOC_DB_USER}:{LOC_DB_PASS}@{LOC_DB_HOST}:{LOC_DB_PORT}/{LOC_DB_NAME}"
-#     )
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

@@ -4,12 +4,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from auth_app.models import Profile
 from basket_app.models import OrderProduct, Basket, Order
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import get_or_create_basket, cancel_order_product, update_order_info, create_new_order, \
-    add_products_in_order
-from product_app.models import Product
+    add_products_in_order, add_product_to_basket
 
 
 class BasketView(APIView):
@@ -25,29 +23,18 @@ class BasketView(APIView):
         product_id: int = request.data.get("id", None)
         count: str = request.data.get("count", None)
         basket: Basket = get_or_create_basket(request)
-        product: Product = Product.objects.get(id=product_id)
-        if not (int(count) <= product.count):
-            return Response({"message": f"You can order only {product.count} products"},
-                            status=status.HTTP_409_CONFLICT)
-
-        product_order, created = OrderProduct.objects.get_or_create(
-            product_id=product_id,
-            basket=basket,
-        )
-        if created:
-            product_order.quantity = count
-            product_order.save()
-            product.count -= int(count)
-            product.save()
-            serializer = OrderProductSerializer(basket.products, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"message": "Product already in basket"},
-                            status=status.HTTP_409_CONFLICT)
+        try:
+            product_order = add_product_to_basket(product_id, count, basket)
+            serializer = OrderProductSerializer(OrderProduct.objects.filter(basket=basket), many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ValueError as e:
+            return Response({'message': str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'message': str(e)}, status=status.HTTP_409_CONFLICT)
 
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def delete(self, request: Request) -> Response:
-        basket: Basket = Basket.objects.get(user=request.user)
+        basket: Basket = get_or_create_basket(request)
         product_id = request.data.get("id")
         order_product: OrderProduct = OrderProduct.objects.get(
             product_id=product_id,
