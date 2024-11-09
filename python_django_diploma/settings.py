@@ -153,7 +153,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -209,14 +210,19 @@ SPECTACULAR_SETTINGS = {
 # CACHE_MIDDLEWARE_SECONDS = 200
 
 
+REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "localhost"
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{REDIS_HOST}:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
-
 CACHE_MIDDLEWARE_SECONDS = 30
+
+# Celery settings
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/0"

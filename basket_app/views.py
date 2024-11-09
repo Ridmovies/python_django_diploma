@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -13,6 +14,7 @@ from basket_app.models import OrderProduct, Basket, Order
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import get_or_create_basket, cancel_order_product, update_order_info, create_new_order, \
     add_products_in_order, add_product_to_basket
+from basket_app.tasks import simple_add
 
 
 class BasketView(APIView):
@@ -95,3 +97,8 @@ class OldOrdersListView(ListAPIView):
         status="Ожидает оплаты"
     )
     serializer_class = OrderSerializer
+
+
+def celery_test(request):
+    result = simple_add.delay(10, 20)
+    return HttpResponse(f'Task ID: {result.task_id}')

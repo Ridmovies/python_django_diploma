@@ -12,7 +12,7 @@ services:
       - "4000:4000"
     depends_on:
       - db
-
+      - redis
 
   db:
     image: postgres:15
@@ -24,3 +24,18 @@ services:
       - POSTGRES_DB=postgres
     expose:
       - 5432
+
+  celery_worker:
+    image: python_django_diploma-web
+    command: celery -A python_django_diploma worker -l info
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: redis:alpine
+
+
+# docker-compose down --rmi all
+# docker-compose build
+# docker-compose up
