@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
@@ -16,7 +18,7 @@ from catalog_app.pagination import CustomPagination
 from catalog_app.serializers import CategorySerializer, SaleSerializer
 from product_app.models import Category, Product
 from product_app.serializers import ProductFullSerializer
-from python_django_diploma.settings import BANNERS_AMOUNT, LIMITED_COUNT, POPULAR_RATING
+from python_django_diploma.settings import BANNERS_AMOUNT, LIMITED_COUNT, POPULAR_RATING, CACHE_MIDDLEWARE_SECONDS
 
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)

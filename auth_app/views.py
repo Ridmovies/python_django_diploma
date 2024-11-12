@@ -63,22 +63,25 @@ class LogoutView(generics.GenericAPIView):
         return Response(status=status.HTTP_200_OK)
 
 
+@extend_schema(tags=["profile"])
 class ProfileView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
+    def get_object(self) -> Profile:
         # Получаем профиль текущего пользователя
         return Profile.objects.get(user=self.request.user)
 
-    @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
         data = request.data
         data.pop("avatar")
-        profile: Profile = Profile.objects.update(**data)
-
+        # Получение профиля текущего пользователя
+        profile: Profile = self.get_object()
+        # Обновление полей профиля данными из запроса
+        for key, value in data.items():
+            setattr(profile, key, value)
+        profile.save()
         serializer = ProfileSerializer(profile, many=False)
-        # TODO Проверить респонс
         return Response(serializer.data)
 
 

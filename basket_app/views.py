@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView
@@ -20,10 +22,12 @@ from basket_app.services import (
     update_order_info,
 )
 from basket_app.tasks import simple_add
+from python_django_diploma.settings import CACHE_MIDDLEWARE_SECONDS
 
 
 class BasketView(APIView):
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
+    @method_decorator(cache_page(CACHE_MIDDLEWARE_SECONDS))
     def get(self, request: Request) -> Response:
         basket: Basket = get_or_create_basket(request)
         products: OrderProduct = OrderProduct.objects.filter(basket=basket)
