@@ -41,13 +41,3 @@ volumes:
   media:
 
 
-# docker-compose down --rmi all
-# docker-compose build
-# docker-compose up
-# Список активных контейнеров
-#docker ps
-# Принудительная остановка всех контейнеров
-# docker stop $(docker ps -aq)
-# Удаление всех остановленных контейнеров
-# docker rm $(docker ps -aq)
-
