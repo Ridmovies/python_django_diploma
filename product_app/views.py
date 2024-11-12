@@ -1,4 +1,3 @@
-from django.db.models import Avg
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, ListAPIView
@@ -7,7 +6,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from product_app.models import Product, Review, Tag
-from product_app.serializers import ProductFullSerializer, ReviewSerializer, TagSerializer
+from product_app.serializers import (
+    ProductFullSerializer,
+    ReviewSerializer,
+    TagSerializer,
+)
 from product_app.services import update_product_avg_rating
 
 
@@ -15,12 +18,12 @@ from product_app.services import update_product_avg_rating
 class ProductDetailApiView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductFullSerializer
-    lookup_field = 'id'
+    lookup_field = "id"
 
 
 @extend_schema(tags=["product"], responses=ReviewSerializer)
 class AddProductReviewApiView(APIView):
-    def post(self, request: Request, id:int):
+    def post(self, request: Request, id: int):
         review = Review.objects.create(**request.data, product_id=id)
         # TODO Create Celery task
         update_product_avg_rating(id)

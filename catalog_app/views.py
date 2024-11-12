@@ -38,7 +38,8 @@ class LimitedProductsListApi(generics.ListAPIView):
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)
 class BannerListApi(generics.ListAPIView):
-    queryset = Product.objects.all().order_by('?')[:BANNERS_AMOUNT]
+    # символ "?" означает, что результаты будут отсортированы в случайном порядке
+    queryset = Product.objects.all().order_by("?")[:BANNERS_AMOUNT]
     serializer_class = ProductFullSerializer
 
 
@@ -60,7 +61,7 @@ class CatalogView(generics.ListAPIView):
     queryset = Product.objects.all().order_by("id")
     serializer_class = ProductFullSerializer
     pagination_class = CustomPagination
-    search_fields = ['title']
+    search_fields = ["title"]
     filter_backends = [
         # TODO FIX duplicate
         CustomOrdering,
@@ -72,6 +73,3 @@ class CatalogView(generics.ListAPIView):
         MaxPriceFilterBackend,
         CategoryFilterBackend,
     ]
-
-    # def get_queryset(self):
-    #     return super().get_queryset().distinct()

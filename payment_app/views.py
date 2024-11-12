@@ -1,22 +1,17 @@
-from django.shortcuts import render
 from drf_spectacular.utils import extend_schema
-from rest_framework import status, generics
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from basket_app.models import Basket, Order
-from payment_app.models import Payment
+from basket_app.models import Order
 from payment_app.payment import get_payment_info, get_payments_list, get_payment_confirm
-from payment_app.serializers import PaymentSerializer
 
 
 class PaymentListView(APIView):
     @extend_schema(tags=["payment"])
     def get(self, request: Request) -> Response:
         payments_list = get_payments_list()
-        # payment_info = get_payment_info()
-        print(f"{payments_list=}")
         return Response(status=status.HTTP_200_OK)
 
 
@@ -27,7 +22,7 @@ class PaymentNotification(APIView):
         order_id = payment_info.metadata.get("orderId")
         order = Order.objects.get(id=order_id)
         if payment_info.status == "succeeded":
-            order.status = 'Оплачено'
+            order.status = "Оплачено"
             order.save()
         else:
             order.status = payment_info.status
@@ -52,7 +47,7 @@ class PaymentConfirmView(APIView):
         if payment_info.status == "succeeded":
             order_id = payment_info.metadata.get("orderId")
             order = Order.objects.get(id=order_id)
-            order.status = 'Оплачено'
+            order.status = "Оплачено"
             order.save()
         return Response(status=status.HTTP_200_OK)
 

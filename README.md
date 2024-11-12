@@ -80,6 +80,31 @@ docker rm $(docker ps -aq)
 ```
 Удаляет все остановленные контейнеры.
 
+
+## Команды для работы с Redis
+### Запустить Redis на локальной машине
+```bash
+sudo service redis-server start
+```
+
+### Запустить Redis в Docker
+```bash
+docker build -f Dockerfile-redis -t my-redis-image .
+docker run -p 6379:6379 my-redis-image
+```
+
+
+# Develop
+
+```bash
+black --check --diff .\product_app\views.py
+
+isort --check-only --diff --profile black a_app/database.py
+mypy src
+```
+
+
+
 1111111111111111111111111111111111111111
 
 

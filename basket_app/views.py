@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
@@ -12,8 +11,14 @@ from rest_framework.generics import ListAPIView
 
 from basket_app.models import OrderProduct, Basket, Order
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
-from basket_app.services import get_or_create_basket, cancel_order_product, update_order_info, create_new_order, \
-    add_products_in_order, add_product_to_basket
+from basket_app.services import (
+    get_or_create_basket,
+    cancel_order_product,
+    update_order_info,
+    create_new_order,
+    add_products_in_order,
+    add_product_to_basket,
+)
 from basket_app.tasks import simple_add
 
 
@@ -32,12 +37,14 @@ class BasketView(APIView):
         basket: Basket = get_or_create_basket(request)
         try:
             product_order = add_product_to_basket(product_id, count, basket)
-            serializer = OrderProductSerializer(OrderProduct.objects.filter(basket=basket), many=True)
+            serializer = OrderProductSerializer(
+                OrderProduct.objects.filter(basket=basket), many=True
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValueError as e:
-            return Response({'message': str(e)}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": str(e)}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'message': str(e)}, status=status.HTTP_409_CONFLICT)
+            return Response({"message": str(e)}, status=status.HTTP_409_CONFLICT)
 
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def delete(self, request: Request) -> Response:
@@ -66,7 +73,9 @@ class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def get(self, request: Request) -> Response:
         # TODO Clean not active orders
-        order: Order = Order.objects.filter(user=request.user, status__isnull=False).order_by("-createdAt")
+        order: Order = Order.objects.filter(
+            user=request.user, status__isnull=False
+        ).order_by("-createdAt")
         serializer = OrderSerializer(order, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -75,7 +84,7 @@ class OrderDetailView(APIView):
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def post(self, request: Request, id: int) -> Response:
         order: Order = Order.objects.get(id=id)
-        if order.status == 'Оплачено':
+        if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
         update_order_info(request, order)
         basket: Basket = Basket.objects.get(user=request.user)
@@ -93,12 +102,11 @@ class OrderDetailView(APIView):
 class OldOrdersListView(ListAPIView):
     permission_classes = [IsAdminUser]
     queryset = Order.objects.filter(
-        createdAt__lt=datetime.now() - timedelta(days=3),
-        status="Ожидает оплаты"
+        createdAt__lt=datetime.now() - timedelta(days=3), status="Ожидает оплаты"
     )
     serializer_class = OrderSerializer
 
 
 def celery_test(request):
     result = simple_add.delay(10, 20)
-    return HttpResponse(f'Task ID: {result.task_id}')
+    return HttpResponse(f"Task ID: {result.task_id}")
