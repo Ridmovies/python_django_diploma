@@ -101,7 +101,7 @@ black --check --diff .\product_app\views.py
 
 isort --check-only --diff --profile black .\product_app\views.py
 
-mypy src
+mypy --incremental ./product_app/views.py 
 ```
 
 
