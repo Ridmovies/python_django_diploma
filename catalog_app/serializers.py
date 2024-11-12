@@ -6,7 +6,6 @@ from catalog_app.models import Sale
 from product_app.models import Category, CategoryImage
 from product_app.serializers import ImageSerializer
 
-
 # class SaleItemSerializer(serializers.ModelSerializer):
 #     id = serializers.CharField(source="product.id", read_only=True)
 #     images = ImageSerializer(source="product.images", many=True, required=True)

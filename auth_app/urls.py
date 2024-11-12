@@ -1,12 +1,12 @@
-from django.urls import path, include
+from django.urls import include, path
 
 from auth_app.views import (
-    LoginApiView,
-    SignUpApiView,
-    LogoutView,
-    ProfileView,
-    ProfileAvatarView,
     ChangePasswordView,
+    LoginApiView,
+    LogoutView,
+    ProfileAvatarView,
+    ProfileView,
+    SignUpApiView,
 )
 
 app_name = "auth"

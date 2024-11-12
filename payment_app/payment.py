@@ -1,11 +1,10 @@
 import os
+import uuid
+
 from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
-
-from yookassa import Payment, Configuration
-import uuid
-
+from yookassa import Configuration, Payment
 
 load_dotenv()
 Configuration.account_id = os.getenv("ACCOUNT_ID")

@@ -1,10 +1,10 @@
 from django.urls import path
 
 from basket_app.views import (
-    OrdersListView,
     BasketView,
-    OrderDetailView,
     OldOrdersListView,
+    OrderDetailView,
+    OrdersListView,
     celery_test,
 )
 

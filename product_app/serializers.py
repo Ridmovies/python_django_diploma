@@ -2,7 +2,7 @@ import datetime
 
 from rest_framework import serializers
 
-from product_app.models import Product, ProductImage, Tag, Review, Specification
+from product_app.models import Product, ProductImage, Review, Specification, Tag
 
 
 class ImageSerializer(serializers.ModelSerializer):

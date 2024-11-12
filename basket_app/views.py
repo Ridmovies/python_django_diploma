@@ -3,21 +3,21 @@ from datetime import datetime, timedelta
 from django.http import HttpResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
 
-from basket_app.models import OrderProduct, Basket, Order
+from basket_app.models import Basket, Order, OrderProduct
 from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import (
-    get_or_create_basket,
-    cancel_order_product,
-    update_order_info,
-    create_new_order,
-    add_products_in_order,
     add_product_to_basket,
+    add_products_in_order,
+    cancel_order_product,
+    create_new_order,
+    get_or_create_basket,
+    update_order_info,
 )
 from basket_app.tasks import simple_add
 

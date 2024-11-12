@@ -99,7 +99,8 @@ docker run -p 6379:6379 my-redis-image
 ```bash
 black --check --diff .\product_app\views.py
 
-isort --check-only --diff --profile black a_app/database.py
+isort --check-only --diff --profile black .\product_app\views.py
+
 mypy src
 ```
 

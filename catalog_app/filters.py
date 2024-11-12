@@ -1,5 +1,5 @@
 from django.db.models import QuerySet
-from rest_framework import generics, filters
+from rest_framework import filters, generics
 from rest_framework.filters import OrderingFilter
 
 

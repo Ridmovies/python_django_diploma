@@ -5,8 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from product_app.models import Product, Tag, Review, ProductImage
-
+from product_app.models import Product, ProductImage, Review, Tag
 
 test_img = (
     b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00\x00\x05\x04\x04"

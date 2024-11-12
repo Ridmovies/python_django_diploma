@@ -1,13 +1,13 @@
 from django.contrib import admin
 
 from product_app.models import (
-    Product,
     Category,
+    CategoryImage,
+    Product,
     ProductImage,
-    Tag,
     Review,
     Specification,
-    CategoryImage,
+    Tag,
 )
 
 

@@ -6,10 +6,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from catalog_app.models import Sale
-from product_app.models import Product, Category
-from python_django_diploma.settings import (
-    BANNERS_AMOUNT,
-)
+from product_app.models import Category, Product
+from python_django_diploma.settings import BANNERS_AMOUNT
 
 
 class CatalogTests(APITestCase):

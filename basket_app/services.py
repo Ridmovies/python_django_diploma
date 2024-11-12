@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework.request import Request
 
 from auth_app.models import Profile
-from basket_app.models import Basket, OrderProduct, Order
+from basket_app.models import Basket, Order, OrderProduct
 from product_app.models import Product
 
 

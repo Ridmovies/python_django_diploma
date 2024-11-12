@@ -2,9 +2,9 @@ import datetime
 
 from rest_framework import serializers
 
-from basket_app.models import Order, Basket, OrderProduct
+from basket_app.models import Basket, Order, OrderProduct
 from product_app.models import Product
-from product_app.serializers import ImageSerializer, TagSerializer, ReviewSerializer
+from product_app.serializers import ImageSerializer, ReviewSerializer, TagSerializer
 
 
 class ProductShortSerializer(serializers.ModelSerializer):

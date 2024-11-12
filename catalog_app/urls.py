@@ -1,13 +1,13 @@
-from django.urls import path, include
+from django.urls import include, path
 from django.views.decorators.cache import cache_page
 
 from catalog_app.views import (
-    PopularProductsListApi,
-    LimitedProductsListApi,
     BannerListApi,
-    SaleApi,
-    CategoriesListView,
     CatalogView,
+    CategoriesListView,
+    LimitedProductsListApi,
+    PopularProductsListApi,
+    SaleApi,
 )
 
 app_name = "catalog"

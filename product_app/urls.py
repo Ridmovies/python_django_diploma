@@ -1,11 +1,10 @@
-from django.urls import path, include
+from django.urls import include, path
 
 from product_app.views import (
-    ProductDetailApiView,
     AddProductReviewApiView,
+    ProductDetailApiView,
     TagsListView,
 )
-
 
 app_name = "product"
 

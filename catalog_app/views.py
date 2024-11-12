@@ -1,27 +1,22 @@
-from rest_framework import generics
 from drf_spectacular.utils import extend_schema
+from rest_framework import generics
 from rest_framework.filters import SearchFilter
 
-from python_django_diploma.settings import (
-    BANNERS_AMOUNT,
-    POPULAR_RATING,
-    LIMITED_COUNT,
-)
-
 from catalog_app.filters import (
-    TagFilterBackend,
-    FreeDeliveryFilterBackend,
     AvailableFilterBackend,
-    MinPriceFilterBackend,
-    MaxPriceFilterBackend,
     CategoryFilterBackend,
     CustomOrdering,
+    FreeDeliveryFilterBackend,
+    MaxPriceFilterBackend,
+    MinPriceFilterBackend,
+    TagFilterBackend,
 )
 from catalog_app.models import Sale
 from catalog_app.pagination import CustomPagination
 from catalog_app.serializers import CategorySerializer, SaleSerializer
-from product_app.models import Product, Category
+from product_app.models import Category, Product
 from product_app.serializers import ProductFullSerializer
+from python_django_diploma.settings import BANNERS_AMOUNT, LIMITED_COUNT, POPULAR_RATING
 
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)

@@ -1,17 +1,17 @@
 import json
 import os
 
-from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
-from rest_framework import status, generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from auth_app.models import Profile, Avatar
+from auth_app.models import Avatar, Profile
 from auth_app.serializers import ProfileSerializer
 from basket_app.models import Basket
 from python_django_diploma.settings import MEDIA_URL

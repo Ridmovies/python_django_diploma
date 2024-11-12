@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from auth_app.models import Profile, Avatar
+from auth_app.models import Avatar, Profile
 
 
 class AvatarSerializer(serializers.ModelSerializer):

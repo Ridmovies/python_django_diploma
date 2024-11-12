@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse, Http404
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import redirect
 from django.views import View
 from yookassa.domain.exceptions import BadRequestError

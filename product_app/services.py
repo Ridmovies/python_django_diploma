@@ -1,6 +1,6 @@
 from django.db.models import Avg
 
-from product_app.models import Review, Product
+from product_app.models import Product, Review
 
 
 def update_product_avg_rating(product_id: int):
