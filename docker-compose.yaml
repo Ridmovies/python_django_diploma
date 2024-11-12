@@ -2,22 +2,22 @@ version: '3.8'
 services:
   web:
     build: .
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:4000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:5000"
     container_name: megano
     environment:
-      - DOCKER_RUNTIME=1
-#    volumes:
-#      - media:/code/src/static/images
+      - DOCKER_RUNTIME=True
+    volumes:
+      - media:/code/src/static/images
     ports:
-      - "4000:4000"
+      - "5000:5000"
     depends_on:
       - db
       - redis
 
   db:
     image: postgres:15
-#    volumes:
-#      - pgdata:/var/lib/postgresql/data/
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -36,6 +36,18 @@ services:
     image: redis:alpine
 
 
+volumes:
+  pgdata:
+  media:
+
+
 # docker-compose down --rmi all
 # docker-compose build
 # docker-compose up
+# Список активных контейнеров
+#docker ps
+# Принудительная остановка всех контейнеров
+# docker stop $(docker ps -aq)
+# Удаление всех остановленных контейнеров
+# docker rm $(docker ps -aq)
+

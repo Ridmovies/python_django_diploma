@@ -13,7 +13,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 
@@ -209,7 +208,10 @@ SPECTACULAR_SETTINGS = {
 #
 # CACHE_MIDDLEWARE_SECONDS = 200
 
-
+# To start redis server:
+# docker run -p 6379:6379 my-redis-image
+# or
+# sudo service redis-server start
 REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "localhost"
 
 CACHES = {

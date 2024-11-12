@@ -1,0 +1,19 @@
+# Указываем базовый образ
+FROM redis:alpine
+
+# Устанавливаем рабочую директорию
+#WORKDIR /usr/src/app
+
+# Копируем конфигурационный файл Redis
+#COPY redis.conf /usr/local/etc/redis/redis.conf
+
+# Открываем порт 6379 для доступа к Redis
+EXPOSE 6379
+
+# Запускаем Redis с использованием конфиг-файла
+#CMD ["redis-server", "/usr/local/etc/redis/redis.conf"]
+CMD ["redis-server"]
+
+
+# docker build -f Dockerfile-redis -t my-redis-image .
+# docker run -p 6379:6379 my-redis-image
