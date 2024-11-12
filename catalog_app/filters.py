@@ -1,4 +1,4 @@
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Count
 from rest_framework import filters, generics
 from rest_framework.filters import OrderingFilter
 
@@ -9,14 +9,13 @@ class CustomOrdering(OrderingFilter):
         sorting_by = request.query_params.get("sort", None)
         sorting_type = request.query_params.get("sortType", None)
         ordering = super().get_ordering(request, queryset, view)
-
         if sorting_by:
             if sorting_type:
                 if sorting_type == "inc":
                     ordering = [f"-{sorting_by}"]
                 if sorting_type == "dec":
                     ordering = [f"{sorting_by}"]
-        return ordering
+            return ordering
 
 
 class IsOwnerFilterBackend(filters.BaseFilterBackend):

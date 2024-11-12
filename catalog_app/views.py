@@ -60,7 +60,6 @@ class CatalogView(generics.ListAPIView):
     pagination_class = CustomPagination
     search_fields = ["title"]
     filter_backends = [
-        # TODO FIX duplicate
         CustomOrdering,
         SearchFilter,
         TagFilterBackend,

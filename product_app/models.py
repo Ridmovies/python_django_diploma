@@ -83,7 +83,6 @@ class Tag(models.Model):
 
 
 class Review(models.Model):
-    # author = models.ForeignKey(to=User, on_delete=models.CASCADE)
     author = models.CharField(max_length=48)
     email = models.EmailField(blank=True, null=True)
     text = models.TextField()

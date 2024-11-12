@@ -102,8 +102,7 @@ class ProfileAvatarView(APIView):
             try:
                 os.remove(old_avatar_src)
             except OSError as e:
-                print("Error removing file: {}".format(e))
-                # TODO Проверить респонс
+                pass
         return Response(status=status.HTTP_200_OK)
 
 
