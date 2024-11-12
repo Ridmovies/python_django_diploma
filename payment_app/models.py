@@ -8,4 +8,3 @@ class Payment(models.Model):
     month = models.CharField(max_length=30)
     year = models.CharField(max_length=30)
     code = models.CharField(max_length=30)
-

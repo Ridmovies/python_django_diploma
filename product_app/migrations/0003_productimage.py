@@ -8,17 +8,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0002_product_count_product_date_product_description_and_more'),
+        ("product_app", "0002_product_count_product_date_product_description_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ProductImage',
+            name="ProductImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('src', models.ImageField(upload_to=product_app.models.product_image_directory_path)),
-                ('alt', models.CharField(max_length=32, null=True)),
-                ('product', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='product_app.product', verbose_name='product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "src",
+                    models.ImageField(
+                        upload_to=product_app.models.product_image_directory_path
+                    ),
+                ),
+                ("alt", models.CharField(max_length=32, null=True)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="product_app.product",
+                        verbose_name="product",
+                    ),
+                ),
             ],
         ),
     ]

@@ -9,18 +9,35 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('product_app', '0019_alter_productimage_alt'),
+        ("product_app", "0019_alter_productimage_alt"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Sale',
+            name="Sale",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('salePrice', models.DecimalField(decimal_places=2, default=0, max_digits=8)),
-                ('dateFrom', models.DateTimeField()),
-                ('dateTo', models.DateTimeField()),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_app.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "salePrice",
+                    models.DecimalField(decimal_places=2, default=0, max_digits=8),
+                ),
+                ("dateFrom", models.DateTimeField()),
+                ("dateTo", models.DateTimeField()),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product_app.product",
+                    ),
+                ),
             ],
         ),
     ]

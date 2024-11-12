@@ -7,13 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('basket_app', '0001_initial'),
+        ("basket_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='orderproduct',
-            name='order',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='products', to='basket_app.order'),
+            model_name="orderproduct",
+            name="order",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="products",
+                to="basket_app.order",
+            ),
         ),
     ]

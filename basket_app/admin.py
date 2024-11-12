@@ -16,5 +16,3 @@ class BasketAdmin(admin.ModelAdmin):
 @admin.register(OrderProduct)
 class OrderProductAdmin(admin.ModelAdmin):
     pass
-
-

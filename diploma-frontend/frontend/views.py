@@ -8,4 +8,3 @@ from payment_app.payment import get_confirmation_url
 class PaymentYooKassaView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         return redirect(get_confirmation_url())
-

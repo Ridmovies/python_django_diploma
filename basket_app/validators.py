@@ -10,7 +10,10 @@ class CreditCardValidator(object):
     def validate(self, value):
         if len(value) < self.min_length or len(value) > self.max_length:
             raise serializers.ValidationError(
-                "Credit card number must be between {} and {} digits long.".format(self.min_length, self.max_length))
+                "Credit card number must be between {} and {} digits long.".format(
+                    self.min_length, self.max_length
+                )
+            )
 
         if not self.ends_with_odd_digit:
             return True
@@ -19,4 +22,6 @@ class CreditCardValidator(object):
         if last_digit % 2 == 1:
             return True
         else:
-            raise serializers.ValidationError("Credit card number must end with an odd digit.")
+            raise serializers.ValidationError(
+                "Credit card number must end with an odd digit."
+            )

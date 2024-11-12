@@ -11,7 +11,9 @@ class Profile(models.Model):
     fullName = models.CharField(max_length=128, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     phone = models.CharField(max_length=12, null=True, blank=True)
-    avatar = models.OneToOneField(to="Avatar", on_delete=models.CASCADE, null=True, blank=True)
+    avatar = models.OneToOneField(
+        to="Avatar", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.user} profile"
@@ -27,5 +29,3 @@ class Avatar(models.Model):
 
     def __str__(self):
         return f"{self.alt}"
-
-

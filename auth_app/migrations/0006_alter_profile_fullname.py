@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth_app', '0005_alter_avatar_src'),
+        ("auth_app", "0005_alter_avatar_src"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='fullName',
+            model_name="profile",
+            name="fullName",
             field=models.CharField(blank=True, max_length=128, null=True),
         ),
     ]

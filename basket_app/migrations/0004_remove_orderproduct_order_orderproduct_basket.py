@@ -7,17 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('basket_app', '0003_basket'),
+        ("basket_app", "0003_basket"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='orderproduct',
-            name='order',
+            model_name="orderproduct",
+            name="order",
         ),
         migrations.AddField(
-            model_name='orderproduct',
-            name='basket',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='products', to='basket_app.basket'),
+            model_name="orderproduct",
+            name="basket",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="products",
+                to="basket_app.basket",
+            ),
         ),
     ]

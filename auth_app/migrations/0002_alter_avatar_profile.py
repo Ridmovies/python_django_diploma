@@ -7,13 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth_app', '0001_initial'),
+        ("auth_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='avatar',
-            name='profile',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='avatar', to='auth_app.profile'),
+            model_name="avatar",
+            name="profile",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="avatar",
+                to="auth_app.profile",
+            ),
         ),
     ]

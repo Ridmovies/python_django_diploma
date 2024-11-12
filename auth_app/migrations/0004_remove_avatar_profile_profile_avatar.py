@@ -7,17 +7,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth_app', '0003_alter_avatar_profile'),
+        ("auth_app", "0003_alter_avatar_profile"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='avatar',
-            name='profile',
+            model_name="avatar",
+            name="profile",
         ),
         migrations.AddField(
-            model_name='profile',
-            name='avatar',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='auth_app.avatar'),
+            model_name="profile",
+            name="avatar",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="auth_app.avatar",
+            ),
         ),
     ]

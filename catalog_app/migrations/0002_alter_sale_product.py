@@ -7,14 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalog_app', '0001_initial'),
-        ('product_app', '0019_alter_productimage_alt'),
+        ("catalog_app", "0001_initial"),
+        ("product_app", "0019_alter_productimage_alt"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sale',
-            name='product',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='product_app.product'),
+            model_name="sale",
+            name="product",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="product_app.product",
+            ),
         ),
     ]

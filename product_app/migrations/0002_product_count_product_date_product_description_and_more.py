@@ -7,56 +7,78 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0001_initial'),
+        ("product_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='count',
+            model_name="product",
+            name="count",
             field=models.SmallIntegerField(default=1),
         ),
         migrations.AddField(
-            model_name='product',
-            name='date',
+            model_name="product",
+            name="date",
             field=models.DateTimeField(auto_now_add=True, null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='description',
+            model_name="product",
+            name="description",
             field=models.TextField(null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='freeDelivery',
+            model_name="product",
+            name="freeDelivery",
             field=models.BooleanField(default=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='fullDescription',
+            model_name="product",
+            name="fullDescription",
             field=models.TextField(null=True),
         ),
         migrations.AddField(
-            model_name='product',
-            name='price',
+            model_name="product",
+            name="price",
             field=models.DecimalField(decimal_places=2, default=0, max_digits=8),
         ),
         migrations.AddField(
-            model_name='product',
-            name='rating',
+            model_name="product",
+            name="rating",
             field=models.DecimalField(decimal_places=1, default=0.2, max_digits=2),
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=40)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='subcategories', to='product_app.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=40)),
+                (
+                    "parent",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="subcategories",
+                        to="product_app.category",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='product',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='product_app.category'),
+            model_name="product",
+            name="category",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="product_app.category",
+            ),
         ),
     ]

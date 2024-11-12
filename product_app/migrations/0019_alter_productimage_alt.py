@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0018_alter_categoryimage_category'),
+        ("product_app", "0018_alter_categoryimage_category"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='productimage',
-            name='alt',
-            field=models.CharField(default=product_app.models.get_default_alt, max_length=32, null=True),
+            model_name="productimage",
+            name="alt",
+            field=models.CharField(
+                default=product_app.models.get_default_alt, max_length=32, null=True
+            ),
         ),
     ]

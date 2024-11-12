@@ -15,7 +15,9 @@ class Product(models.Model):
     date = models.DateTimeField(auto_now_add=True, null=True)
     # TODO Create dynamic rating
     rating = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(
+        "Category", on_delete=models.CASCADE, blank=True, null=True
+    )
 
     def __str__(self):
         return self.title
@@ -28,7 +30,7 @@ class Category(models.Model):
         on_delete=models.PROTECT,
         blank=True,
         null=True,
-        related_name="subcategories"
+        related_name="subcategories",
     )
 
     def __str__(self):
@@ -48,7 +50,13 @@ def get_default_alt() -> str:
 
 
 class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images", verbose_name="product", null=True)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name="product",
+        null=True,
+    )
     src = models.ImageField(upload_to=product_image_directory_path)
     alt = models.CharField(max_length=32, default=get_default_alt, null=True)
 
@@ -57,14 +65,18 @@ class ProductImage(models.Model):
 
 
 class CategoryImage(models.Model):
-    category = models.OneToOneField(Category, on_delete=models.CASCADE, related_name="image", null=True)
+    category = models.OneToOneField(
+        Category, on_delete=models.CASCADE, related_name="image", null=True
+    )
     src = models.ImageField(upload_to=category_image_directory_path)
     alt = models.CharField(max_length=32, null=True)
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=12)
-    product = models.ManyToManyField(Product, related_name="tags", verbose_name="product")
+    product = models.ManyToManyField(
+        Product, related_name="tags", verbose_name="product"
+    )
 
     def __str__(self):
         return self.name
@@ -76,10 +88,13 @@ class Review(models.Model):
     email = models.EmailField(blank=True, null=True)
     text = models.TextField()
     rate = models.PositiveSmallIntegerField(
-        validators=[MaxValueValidator(5), MinValueValidator(1)], default=1,
+        validators=[MaxValueValidator(5), MinValueValidator(1)],
+        default=1,
     )
     date = models.DateTimeField(auto_now_add=True)
-    product = models.ForeignKey(to=Product, related_name="reviews", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        to=Product, related_name="reviews", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"{self.author}, {self.product}"

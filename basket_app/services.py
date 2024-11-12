@@ -16,7 +16,9 @@ def get_or_create_basket(request: Request):
         request.session.modified = True
         request.session.save()
 
-        basket, _ = Basket.objects.get_or_create(session_key=request.session.session_key)
+        basket, _ = Basket.objects.get_or_create(
+            session_key=request.session.session_key
+        )
         return basket
 
 
@@ -24,15 +26,14 @@ def add_product_to_basket(product_id, count, basket):
     try:
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
-        raise ValueError(f'Product with ID {product_id} does not exist.')
+        raise ValueError(f"Product with ID {product_id} does not exist.")
 
     if int(count) > product.count:
-        message = f'You can order only {product.count} products.'
+        message = f"You can order only {product.count} products."
         raise Exception(message)
 
     product_order, created = OrderProduct.objects.get_or_create(
-        product_id=product.id,
-        basket=basket
+        product_id=product.id, basket=basket
     )
 
     if created:
@@ -41,7 +42,7 @@ def add_product_to_basket(product_id, count, basket):
         product.count -= int(count)
         product.save()
     else:
-        raise RuntimeError('Product already in basket')
+        raise RuntimeError("Product already in basket")
 
     return product_order
 
@@ -57,15 +58,15 @@ def cancel_order_product(order_product: OrderProduct, product_id: int):
 def update_order_info(request: Request, order: Order) -> None:
     data: dict = request.data
     print(f"{data=}")
-    order.status = 'Ожидает оплаты'
-    order.fullName = data['fullName']
-    order.phone = data.get('phone', None)
-    order.email = data['email']
-    order.city = data['city']
-    order.address = data['address']
-    order.totalCost = data['totalCost']
-    order.paymentType = data.get('paymentType') or 'online'
-    order.deliveryType = data.get('deliveryType') or 'standard'
+    order.status = "Ожидает оплаты"
+    order.fullName = data["fullName"]
+    order.phone = data.get("phone", None)
+    order.email = data["email"]
+    order.city = data["city"]
+    order.address = data["address"]
+    order.totalCost = data["totalCost"]
+    order.paymentType = data.get("paymentType") or "online"
+    order.deliveryType = data.get("deliveryType") or "standard"
     order.save()
 
 

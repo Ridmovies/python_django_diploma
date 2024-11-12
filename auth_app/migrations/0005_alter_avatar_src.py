@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth_app', '0004_remove_avatar_profile_profile_avatar'),
+        ("auth_app", "0004_remove_avatar_profile_profile_avatar"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='avatar',
-            name='src',
-            field=models.ImageField(upload_to=auth_app.models.avatar_image_directory_path),
+            model_name="avatar",
+            name="src",
+            field=models.ImageField(
+                upload_to=auth_app.models.avatar_image_directory_path
+            ),
         ),
     ]

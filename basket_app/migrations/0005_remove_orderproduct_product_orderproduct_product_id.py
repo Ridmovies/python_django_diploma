@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('basket_app', '0004_remove_orderproduct_order_orderproduct_basket'),
+        ("basket_app", "0004_remove_orderproduct_order_orderproduct_basket"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='orderproduct',
-            name='product',
+            model_name="orderproduct",
+            name="product",
         ),
         migrations.AddField(
-            model_name='orderproduct',
-            name='product_id',
+            model_name="orderproduct",
+            name="product_id",
             field=models.IntegerField(default=1),
             preserve_default=False,
         ),

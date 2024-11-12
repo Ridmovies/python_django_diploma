@@ -15,9 +15,9 @@ class ProductShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id',
-            'title',
-            'price',
+            "id",
+            "title",
+            "price",
             "category",
             "date",
             "description",
@@ -44,14 +44,11 @@ class OrderProductSerializer(serializers.ModelSerializer):
     # TODO Change it
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        product = Product.objects.get(id=representation['product_id'])
+        product = Product.objects.get(id=representation["product_id"])
         product_serializer = ProductShortSerializer(product)
 
         # Объединяем данные продукта и количество
-        return {
-            **product_serializer.data,
-            "count": representation["quantity"]
-        }
+        return {**product_serializer.data, "count": representation["quantity"]}
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -77,7 +74,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_createdAt(self, instance) -> str:
         # example: 2023 - 05 - 05 12: 12
-        return datetime.datetime.strftime(instance.createdAt, '%Y-%m-%d %H:%M')
+        return datetime.datetime.strftime(instance.createdAt, "%Y-%m-%d %H:%M")
 
 
 class BasketSerializer(serializers.ModelSerializer):
@@ -86,4 +83,3 @@ class BasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Basket
         fields = ("products",)
-

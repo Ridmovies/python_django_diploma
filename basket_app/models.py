@@ -5,7 +5,9 @@ from product_app.models import Product
 
 
 class Basket(models.Model):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(
+        to=User, on_delete=models.CASCADE, null=True, blank=True
+    )
     session_key = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
@@ -33,7 +35,9 @@ class OrderProduct(models.Model):
     # product = models.ForeignKey(to=Product, on_delete=models.PROTECT)
     product_id = models.IntegerField()
     quantity = models.IntegerField(null=True)
-    basket = models.ForeignKey(to=Basket, on_delete=models.CASCADE, related_name="products", null=True)
-    order = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name="products", null=True)
-
-
+    basket = models.ForeignKey(
+        to=Basket, on_delete=models.CASCADE, related_name="products", null=True
+    )
+    order = models.ForeignKey(
+        to=Order, on_delete=models.CASCADE, related_name="products", null=True
+    )

@@ -44,4 +44,3 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Specification)
 class SpecificationAdmin(admin.ModelAdmin):
     pass
-

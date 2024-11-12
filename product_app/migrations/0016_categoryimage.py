@@ -8,17 +8,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0015_alter_review_author'),
+        ("product_app", "0015_alter_review_author"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CategoryImage',
+            name="CategoryImage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('src', models.ImageField(upload_to=product_app.models.category_image_directory_path)),
-                ('alt', models.CharField(max_length=32, null=True)),
-                ('category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='product_app.category', verbose_name='category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "src",
+                    models.ImageField(
+                        upload_to=product_app.models.category_image_directory_path
+                    ),
+                ),
+                ("alt", models.CharField(max_length=32, null=True)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="product_app.category",
+                        verbose_name="category",
+                    ),
+                ),
             ],
         ),
     ]

@@ -8,7 +8,7 @@ from payment_app.payment import get_confirmation_url
 
 
 class PaymentYooKassaView(View):
-    def get(self, request: HttpRequest, id:int) -> HttpResponse:
+    def get(self, request: HttpRequest, id: int) -> HttpResponse:
         # TODO HARDCODE
         exchange_rate = 90
         order: Order = Order.objects.get(id=id)
@@ -20,9 +20,3 @@ class PaymentYooKassaView(View):
             return redirect(url)
         except BadRequestError:
             raise Http404("TEST")
-
-
-
-
-
-

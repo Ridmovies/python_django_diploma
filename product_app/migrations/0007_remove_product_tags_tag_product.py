@@ -7,17 +7,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0006_remove_product_tags_product_tags'),
+        ("product_app", "0006_remove_product_tags_product_tags"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='product',
-            name='tags',
+            model_name="product",
+            name="tags",
         ),
         migrations.AddField(
-            model_name='tag',
-            name='product',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='tags', to='product_app.product'),
+            model_name="tag",
+            name="product",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="tags",
+                to="product_app.product",
+            ),
         ),
     ]

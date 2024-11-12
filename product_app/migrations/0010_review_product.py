@@ -7,14 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0009_review'),
+        ("product_app", "0009_review"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='review',
-            name='product',
-            field=models.OneToOneField(default=1, on_delete=django.db.models.deletion.CASCADE, to='product_app.product'),
+            model_name="review",
+            name="product",
+            field=models.OneToOneField(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="product_app.product",
+            ),
             preserve_default=False,
         ),
     ]

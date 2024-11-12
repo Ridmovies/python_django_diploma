@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0019_alter_productimage_alt'),
+        ("product_app", "0019_alter_productimage_alt"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='description',
+            model_name="product",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='product',
-            name='fullDescription',
+            model_name="product",
+            name="fullDescription",
             field=models.TextField(blank=True, null=True),
         ),
     ]

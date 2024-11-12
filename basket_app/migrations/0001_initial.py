@@ -9,33 +9,62 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('product_app', '0019_alter_productimage_alt'),
+        ("product_app", "0019_alter_productimage_alt"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('fullName', models.CharField(max_length=128)),
-                ('email', models.EmailField(max_length=254)),
-                ('phone', models.CharField(max_length=11)),
-                ('deliveryType', models.CharField(max_length=12)),
-                ('paymentType', models.CharField(max_length=12)),
-                ('totalCost', models.FloatField()),
-                ('status', models.CharField(max_length=12)),
-                ('city', models.CharField(max_length=24)),
-                ('address', models.CharField(max_length=64)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("createdAt", models.DateTimeField(auto_now_add=True)),
+                ("fullName", models.CharField(max_length=128)),
+                ("email", models.EmailField(max_length=254)),
+                ("phone", models.CharField(max_length=11)),
+                ("deliveryType", models.CharField(max_length=12)),
+                ("paymentType", models.CharField(max_length=12)),
+                ("totalCost", models.FloatField()),
+                ("status", models.CharField(max_length=12)),
+                ("city", models.CharField(max_length=24)),
+                ("address", models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
-            name='OrderProduct',
+            name="OrderProduct",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField()),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='basket_app.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='product_app.product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.IntegerField()),
+                (
+                    "order",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="products",
+                        to="basket_app.order",
+                    ),
+                ),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="product_app.product",
+                    ),
+                ),
             ],
         ),
     ]

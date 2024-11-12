@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product_app', '0016_categoryimage'),
+        ("product_app", "0016_categoryimage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='categoryimage',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='image', to='product_app.category', verbose_name='category'),
+            model_name="categoryimage",
+            name="category",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="image",
+                to="product_app.category",
+                verbose_name="category",
+            ),
         ),
     ]

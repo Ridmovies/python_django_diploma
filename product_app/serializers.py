@@ -33,7 +33,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         )
 
     def get_date(self, instance) -> str:
-        return datetime.datetime.strftime(instance.date, '%d.%m.%Y %H:%M')
+        return datetime.datetime.strftime(instance.date, "%d.%m.%Y %H:%M")
 
 
 class SpecificationSerializer(serializers.ModelSerializer):
@@ -54,9 +54,9 @@ class ProductFullSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id',
-            'title',
-            'price',
+            "id",
+            "title",
+            "price",
             "category",
             "date",
             "count",
@@ -69,4 +69,3 @@ class ProductFullSerializer(serializers.ModelSerializer):
             "specifications",
             "rating",
         )
-
