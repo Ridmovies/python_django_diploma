@@ -196,19 +196,6 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-#         "LOCATION":  BASE_DIR / "cache_tmp",
-#     }
-# }
-#
-# CACHE_MIDDLEWARE_SECONDS = 200
-
-# To start redis server:
-# docker run -p 6379:6379 my-redis-image
-# or
-# sudo service redis-server start
 REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "localhost"
 
 CACHES = {
@@ -220,8 +207,25 @@ CACHES = {
         },
     }
 }
-CACHE_MIDDLEWARE_SECONDS = 30
+CACHE_MIDDLEWARE_SECONDS = 5
 
 # Celery settings
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/0"
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }

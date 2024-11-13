@@ -16,7 +16,13 @@ from product_app.services import update_product_avg_rating
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
 class ProductDetailApiView(RetrieveAPIView):
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related(
+        'images',
+        'tags',
+        'reviews',
+        'specifications',
+    ).all()
     serializer_class = ProductFullSerializer
     lookup_field = "id"
 
