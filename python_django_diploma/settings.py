@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    "django_celery_beat",
     "debug_toolbar",
     "payment_app.apps.PaymentAppConfig",
     "frontend.apps.FrontendConfig",
@@ -102,6 +103,7 @@ WSGI_APPLICATION = "python_django_diploma.wsgi.application"
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
 
 if os.getenv("DOCKER_RUNTIME"):
     DATABASES = {

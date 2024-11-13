@@ -81,6 +81,10 @@ docker rm $(docker ps -aq)
 Удаляет все остановленные контейнеры.
 
 
+
+
+# Develop
+
 ## Команды для работы с Redis
 ### Запустить Redis на локальной машине
 ```bash
@@ -93,9 +97,14 @@ docker build -f Dockerfile-redis -t my-redis-image .
 docker run -p 6379:6379 my-redis-image
 ```
 
+### Запустить Redis и Celery в Docker
+```bash
+docker-compose -f my-docker-compose-dev.yml up --build
+```
 
-# Develop
 
+
+## Линтеры:
 ```bash
 black --check --diff .\product_app\views.py
 

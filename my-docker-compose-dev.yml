@@ -17,3 +17,14 @@ services:
     environment:
       BROKER_URL: redis://redis:6379/0
       RESULT_BACKEND: redis://redis:6379/0
+
+
+  celery-beat:
+    build: .
+    command: celery -A python_django_diploma beat -l INFO
+    depends_on:
+      - redis
+    volumes:
+      - .:/code
+    environment:
+      - BROKER_URL=redis://redis:6379/0
