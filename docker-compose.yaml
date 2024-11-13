@@ -2,7 +2,11 @@ version: '3.8'
 services:
   web:
     build: .
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:5000"
+    command: >
+      bash -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:5000
+      "
     container_name: megano
     environment:
       - DOCKER_RUNTIME=True
@@ -34,6 +38,15 @@ services:
 
   redis:
     image: redis:alpine
+
+  #
+  #  celery_beat:
+  #    image: python_django_diploma-web
+  #    command: celery -A python_django_diploma beat -l INFO
+  #    depends_on:
+  #      - web
+  #      - redis
+  #
 
 
 volumes:

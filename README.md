@@ -55,9 +55,17 @@ docker-compose build
 ### Запуск сервисов
 
 ```bash
-docker-compose up
+docker-compose up 
 ```
 Запускает сервисы, определенные в `docker-compose.yml`.
+
+
+### Создание супер пользователя
+```bash
+docker exec -it megano python manage.py createsuperuser
+```
+
+
 
 ### Просмотр активных контейнеров
 
