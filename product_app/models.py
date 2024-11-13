@@ -18,6 +18,8 @@ class Product(models.Model):
     category = models.ForeignKey(
         "Category", on_delete=models.CASCADE, blank=True, null=True
     )
+    # Добавляем новое поле для хранения количества отзывов
+    reviews_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
