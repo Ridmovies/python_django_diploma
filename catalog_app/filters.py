@@ -10,6 +10,8 @@ class CustomOrdering(OrderingFilter):
         sorting_type = request.query_params.get("sortType", None)
         ordering = super().get_ordering(request, queryset, view)
         if sorting_by:
+            if sorting_by == "reviews":
+                sorting_by = "reviews_count"
             if sorting_type:
                 if sorting_type == "inc":
                     ordering = [f"-{sorting_by}"]

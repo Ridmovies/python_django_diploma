@@ -7,7 +7,6 @@ from product_app.models import Review
 @receiver(post_save, sender=Review)
 def update_reviews_count(sender, instance, created, **kwargs):
     if created:
-        print("1111111111111111111111111111111111111111111111111")
         # Если отзыв был создан, увеличиваем счетчик
         instance.product.reviews_count += 1
         # Сохраняем изменения в базе данных
