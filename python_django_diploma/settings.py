@@ -212,7 +212,7 @@ CACHES = {
         },
     }
 }
-CACHE_MIDDLEWARE_SECONDS = 10
+CACHE_MIDDLEWARE_SECONDS = 5 * 60
 
 # Celery settings
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"

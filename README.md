@@ -107,7 +107,7 @@ docker run -p 6379:6379 my-redis-image
 
 ### Запустить Redis и Celery в Docker
 ```bash
-docker-compose -f my-docker-compose-dev.yml up --build
+docker-compose -f docker-compose-dev.yml up
 ```
 
 

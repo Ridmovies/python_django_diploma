@@ -13,7 +13,3 @@ from product_app.models import Product, Review
 #     product.rating = average_rate
 #     product.save()
 
-# @shared_task
-# def update_product_avg_rating(product_id: int):
-#     print("celery task")
-
