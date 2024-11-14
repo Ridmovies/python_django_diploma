@@ -48,7 +48,7 @@ class BasketTests(APITestCase):
     def test_add_product_in_basket(self):
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response_data = json.loads(response.content)
         self.assertEqual(response_data[0]["id"], self.product.id)
         self.assertEqual(response_data[0]["count"], 2)
@@ -56,17 +56,17 @@ class BasketTests(APITestCase):
     def test_add_two_different_product_in_basket(self):
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         data2 = {"id": self.product2.id, "count": 2}
         response = self.client.post(self.url, data2, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data), 2)
 
     def test_add_two_same_product_in_basket(self):
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
         response_data = json.loads(response.content)
@@ -79,12 +79,12 @@ class BasketTests(APITestCase):
         response = self.client.post(self.url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
         response_data = json.loads(response.content)
-        self.assertEqual(response_data, {"message": "You can order only 5 products"})
+        self.assertEqual(response_data, {"message": "You can order only 5 products."})
 
     def test_delete_product_from_basket(self):
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data), 1)
         response = self.client.delete(self.url, data, format="json")
@@ -104,7 +104,7 @@ class OrderTests(APITestCase):
         url = reverse("basket_app:basket")
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_get_orders(self):
         url = reverse("basket_app:orders")

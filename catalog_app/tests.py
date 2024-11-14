@@ -59,7 +59,6 @@ class CatalogTests(APITestCase):
         url = reverse("catalog:sales")
         response = self.client.get(url)
         data = json.loads(response.content)
-        print(f"{data=}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(data["items"]), 1)
         self.assertEqual(data["items"][0]["salePrice"], "100.00")

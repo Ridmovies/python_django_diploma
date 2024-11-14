@@ -122,6 +122,10 @@ mypy --incremental ./product_app/views.py
 ```
 
 
+## Тестирование
+```bash
+python manage.py test
+```
 
 1111111111111111111111111111111111111111
 

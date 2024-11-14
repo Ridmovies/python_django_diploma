@@ -26,6 +26,8 @@ urlpatterns = [
     path("sales/",
          cache_page(CACHE_MIDDLEWARE_SECONDS)(SaleApi.as_view()),
          name="sales"),
-    path("categories/", CategoriesListView.as_view(), name="categories"),
+    path("categories/",
+         cache_page(CACHE_MIDDLEWARE_SECONDS)(CategoriesListView.as_view()),
+         name="categories"),
     path("catalog/", CatalogView.as_view(), name="catalog_view"),
 ]

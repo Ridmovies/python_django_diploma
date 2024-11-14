@@ -17,9 +17,9 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-beat_schedule = {
-    'run-every-minute': {
-        'task': 'tasks.my_task',
-        'schedule': 60.0,
-    },
-}
+# beat_schedule = {
+#     'run-every-minute': {
+#         'task': 'tasks.my_task',
+#         'schedule': 60.0,
+#     },
+# }

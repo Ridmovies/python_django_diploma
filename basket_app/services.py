@@ -57,7 +57,6 @@ def cancel_order_product(order_product: OrderProduct, product_id: int):
 
 def update_order_info(request: Request, order: Order) -> None:
     data: dict = request.data
-    print(f"{data=}")
     order.status = "Ожидает оплаты"
     order.fullName = data["fullName"]
     order.phone = data.get("phone", None)

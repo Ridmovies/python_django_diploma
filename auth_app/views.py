@@ -109,7 +109,6 @@ class ProfileAvatarView(APIView):
 class ChangePasswordView(APIView):
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        print(f"{request.data=}")
         user: User = User.objects.get(id=request.user.id)
 
         current_password = request.data.get("currentPassword", None)
