@@ -21,7 +21,6 @@ from basket_app.services import (
     get_or_create_basket,
     update_order_info,
 )
-from basket_app.tasks import simple_add
 
 
 class BasketView(APIView):
@@ -88,7 +87,7 @@ class OrderDetailView(APIView):
         order: Order = Order.objects.get(id=id)
         if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
-        update_order_info(request, order)
+        # update_order_info(request, order)
         basket: Basket = Basket.objects.get(user=request.user)
         basket.products.clear()
         return Response({"orderId": order.id})

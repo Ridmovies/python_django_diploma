@@ -50,9 +50,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
-    "django_celery_beat",
+    # "django_celery_beat",
     "debug_toolbar",
     "payment_app.apps.PaymentAppConfig",
+    # "frontend",
     "frontend.apps.FrontendConfig",
     "product_app.apps.ProductAppConfig",
     "catalog_app.apps.CatalogAppConfig",
@@ -211,7 +212,7 @@ CACHES = {
         },
     }
 }
-CACHE_MIDDLEWARE_SECONDS = 5
+CACHE_MIDDLEWARE_SECONDS = 10
 
 # Celery settings
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"

@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile-celery
+    command: celery -A python_django_diploma worker -l INFO
+    depends_on:
+      - redis
+    volumes:
+      - .:/code
+    environment:
+      BROKER_URL: redis://redis:6379/0
+      RESULT_BACKEND: redis://redis:6379/0
