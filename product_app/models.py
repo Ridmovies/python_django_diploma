@@ -9,17 +9,16 @@ class Product(models.Model):
     fullDescription = models.TextField(null=True, blank=True)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     freeDelivery = models.BooleanField(default=True)
-    # TODO Create dynamic count
     count = models.SmallIntegerField(default=1)
     # Automatically set the field to now when the object is first created.
     date = models.DateTimeField(auto_now_add=True, null=True)
-    # TODO Create dynamic rating
     rating = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
+    # Добавляем новое поле для хранения количества отзывов
+    reviews_count = models.IntegerField(default=0)
     category = models.ForeignKey(
         "Category", on_delete=models.CASCADE, blank=True, null=True
     )
-    # Добавляем новое поле для хранения количества отзывов
-    reviews_count = models.IntegerField(default=0)
+    tags = models.ManyToManyField("Tag", related_name="products")
 
     def __str__(self):
         return self.title
@@ -71,14 +70,14 @@ class CategoryImage(models.Model):
         Category, on_delete=models.CASCADE, related_name="image", null=True
     )
     src = models.ImageField(upload_to=category_image_directory_path)
-    alt = models.CharField(max_length=32, null=True)
+    alt = models.CharField(max_length=32, default=get_default_alt, null=True)
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=12)
-    product = models.ManyToManyField(
-        Product, related_name="tags", verbose_name="product"
-    )
+    # product = models.ManyToManyField(
+    #     Product, related_name="tags", verbose_name="product"
+    # )
 
     def __str__(self):
         return self.name

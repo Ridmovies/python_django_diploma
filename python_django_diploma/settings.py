@@ -98,35 +98,35 @@ WSGI_APPLICATION = "python_django_diploma.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+# if os.getenv("DOCKER_RUNTIME"):
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "HOST": os.environ.get("DOCKER_DB_HOST"),
+#             "NAME": os.environ.get("DOCKER_DB_NAME"),
+#             "USER": os.environ.get("DOCKER_DB_USER"),
+#             "PASSWORD": os.environ.get("DOCKER_DB_PASS"),
+#         }
 #     }
-# }
-
-
-if os.getenv("DOCKER_RUNTIME"):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "HOST": os.environ.get("DOCKER_DB_HOST"),
-            "NAME": os.environ.get("DOCKER_DB_NAME"),
-            "USER": os.environ.get("DOCKER_DB_USER"),
-            "PASSWORD": os.environ.get("DOCKER_DB_PASS"),
-        }
-    }
-
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "HOST": os.environ.get("DB_HOST"),
-            "NAME": os.environ.get("DB_NAME"),
-            "USER": os.environ.get("DB_USER"),
-            "PASSWORD": os.environ.get("DB_PASS"),
-        }
-    }
+#
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "HOST": os.environ.get("DB_HOST"),
+#             "NAME": os.environ.get("DB_NAME"),
+#             "USER": os.environ.get("DB_USER"),
+#             "PASSWORD": os.environ.get("DB_PASS"),
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -212,7 +212,9 @@ CACHES = {
         },
     }
 }
-CACHE_MIDDLEWARE_SECONDS = 5 * 60
+
+
+CACHE_MIDDLEWARE_SECONDS = 5 * 1
 
 # Celery settings
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"

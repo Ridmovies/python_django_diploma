@@ -1,42 +1,141 @@
 
 # Megano
 
-## Описание проекта
-Краткое описание проекта, его цели и основные функции.
+## Description
+This project is a backend for an online store, developed using Django, Django REST framework and Redis. 
+It includes a system of authorization, registration, user credentials management, 
+as well as the functionality of a product catalog, a review system, a shopping cart and checkout.
 
-## Установка
-1. Клонируйте репозиторий:
+
+## Fast install with Docker and sqlite
+```bash
+docker-compose -f sqlite-docker-compose.yaml up --build
+```
+
+
+
+## Installation with Docker
+1. Clone the repo
    ```bash
-   git clone https://github.com/ваш_профиль/название_проекта.git
+   git clone https://gitlab.skillbox.ru/riddler_rid/python_django_diploma.git
+   ```
+   
+2. Install Docker Engine
+* https://docs.docker.com/engine/install/
+* https://docs.docker.com/engine/install/ubuntu/
+
+3. Enter the application root folder:
+``` 
+cd python_advanced_diploma 
+```
+
+4. Run docker-compose 
+   ```bash
+    docker-compose up 
+   ```
+   
+### Creating a superuser
+```bash
+docker exec -it megano python manage.py createsuperuser
+```
+
+### Импорт всех данных:
+
+```bash
+python manage.py loaddata fixtures/all_data.json
+```
+
+
+
+## Installation with Virtual Environment
+1. Clone the repo
+   ```bash
+   git clone https://gitlab.skillbox.ru/riddler_rid/python_django_diploma.git
    ```
 
-2. Установите виртуальное окружение и активируйте его:
+2. Create a virtual environment in the project's root folder:
    ```bash
    python3 -m venv venv
-   source venv/bin/activate
+   ```
+3. Activate the virtual environment:
+   ```bash 
+   source venv/bin/activate 
    ```
 
-3. Установите зависимости:
+4. Install dependencies for the production environment:
    ```bash
     pip install -r requirements.txt
    ```
    
-4. Выполните миграцию базы данных:
+5. Change .env file
+* Create postgres database or launch postgres docker 
+* Rename '.env.template' to '.env'
+* Replace the settings with your own
+   
+6. Perform a database migration:
    ```bash
-    cd MyDjangoApp
    python manage.py migrate
    ```
 
-5. Запустите сервер разработки:   
+### Запустить Redis на локальной машине
+
+8. Start your application:   
    ```bash
     python manage.py runserver
    ```
    
+<!-- USAGE EXAMPLES -->
+## Usage
 
+### Creating a superuser
+```bash
+python manage.py createsuperuser --username=root --email=root@example.com
+```
+
+* ### Start page application
+        http://127.0.0.1:8000/
+
+* ### Admin Panel
+        http://127.0.0.1:8000/admin
+
+* ### Swagger UI (API)
+        http://127.0.0.1:8000/api/schema/swagger-ui/
+
+
+   ```bash
+
+```
+
+# Develop
+
+## Работа с fixtures
+### Экспорт всех данных:
+   ```bash
+python manage.py dumpdata > fixtures/all_data.json --format=json 
+```
+
+
+### Экспорт данных конкретной модели:
+
+```bash
+python manage.py loaddata product_app.Product >fixtures/products-fixtures.json --format=json
+```
+
+### Импорт всех данных:
+
+```bash
+python manage.py loaddata fixtures/all_data.json
+```
 
 
 ## Команды для работы с Docker Compose
 Эти команды помогут управлять контейнерами и образами в вашем проекте, обеспечивая удобный процесс разработки и тестирования.
+
+## Для запуска консоли внутри работающего Docker-контейнера используется команда docker exec
+```bash
+docker exec -it megano bash 
+```
+
 
 ### Остановка и удаление всех сервисов и образов
 
@@ -58,12 +157,6 @@ docker-compose build
 docker-compose up 
 ```
 Запускает сервисы, определенные в `docker-compose.yml`.
-
-
-### Создание супер пользователя
-```bash
-docker exec -it megano python manage.py createsuperuser
-```
 
 
 
@@ -89,9 +182,6 @@ docker rm $(docker ps -aq)
 Удаляет все остановленные контейнеры.
 
 
-
-
-# Develop
 
 ## Команды для работы с Redis
 ### Запустить Redis на локальной машине
@@ -126,167 +216,3 @@ mypy --incremental ./product_app/views.py
 ```bash
 python manage.py test
 ```
-
-1111111111111111111111111111111111111111
-
-
-### Шаг 1: Создание заголовка
-
-Начните с названия проекта и краткого описания, что делает ваш проект уникальным.
-
-```markdown
-# Название Проекта
-
-Краткое описание проекта, его цели и основные функции.
-```
-
-### Шаг 2: Описание проекта
-
-Расскажите подробнее о том, чем занимается ваш проект, почему он был создан и какую проблему решает.
-
-```markdown
-## Описание
-
-Подробнее расскажите о проекте, его назначении и ключевых особенностях. Укажите, кому может быть интересен ваш проект и какие задачи он решает.
-```
-
-### Шаг 3: Инструкции по установке
-
-Опишите шаги, необходимые для установки и настройки проекта. Включите зависимости, платформы и среды разработки, которые необходимы для работы проекта.
-
-```markdown
-## Установка
-
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/ваш_профиль/название_проекта.git
-   ```
-
-2. Установите зависимости:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Настройте окружение:
-   ```bash
-   # Дополнительные шаги, если они требуются
-   ```
-```
-
-### Шаг 4: Инструкции по использованию
-
-Объясните, как начать работать с проектом. Опишите основные команды, примеры использования и возможные сценарии применения.
-
-```markdown
-## Использование
-
-1. Запустите приложение:
-   ```bash
-   python main.py
-   ```
-
-2. Используйте команды:
-   - `Команда 1`: Описание команды
-   - `Команда 2`: Описание второй команды
-
-Примеры использования:
-```bash
-python main.py --option1 value1 --option2 value2
-```
-```
-
-### Шаг 5: Лицензия
-
-Укажите лицензию, под которой распространяется ваш проект. Это важно для защиты прав авторов и информирования пользователей об условиях использования проекта.
-
-```markdown
-## Лицензия
-
-Этот проект распространяется под лицензией [Название лицензии]. Подробнее см. файл LICENSE.
-```
-
-### Шаг 6: Контактная информация
-
-Добавьте контактные данные автора или команды проекта, чтобы пользователи могли связаться с вами для получения дополнительной информации или поддержки.
-
-```markdown
-## Контакты
-
-- Автор: Ваше имя
-- Email: ваш_email@example.com
-- LinkedIn: [Ваш профиль](https://www.linkedin.com/in/ваш_профиль/)
-```
-
-### Шаг 7: Примечания и благодарности
-
-Не забудьте добавить любые примечания, благодарности или ссылки на ресурсы, которые были использованы при создании проекта.
-
-```markdown
-## Примечания
-
-- Благодарю всех участников проекта!
-- Ссылки на полезные ресурсы...
-```
-
-### Пример полного README.md
-
-```markdown
-# Название Проекта
-
-Краткое описание проекта, его цели и основные функции.
-
-## Описание
-
-Подробнее расскажите о проекте, его назначении и ключевых особенностях. Укажите, кому может быть интересен ваш проект и какие задачи он решает.
-
-## Установка
-
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/ваш_профиль/название_проекта.git
-   ```
-
-2. Установите зависимости:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Настройте окружение:
-   ```bash
-   # Дополнительные шаги, если они требуются
-   ```
-
-## Использование
-
-1. Запустите приложение:
-   ```bash
-   python main.py
-   ```
-
-2. Используйте команды:
-   - `Команда 1`: Описание команды
-   - `Команда 2`: Описание второй команды
-
-Примеры использования:
-```bash
-python main.py --option1 value1 --option2 value2
-```
-
-## Лицензия
-
-Этот проект распространяется под лицензией MIT. Подробнее см. файл LICENSE.
-
-## Контакты
-
-- Автор: Ваше имя
-- Email: ваш_email@example.com
-- LinkedIn: [Ваш профиль](https://www.linkedin.com/in/ваш_профиль/)
-
-## Примечания
-
-- Благодарю всех участников проекта!
-- Ссылки на полезные ресурсы...
-```
-
-Этот шаблон поможет вам создать качественное `README.md`, которое предоставит всю необходимую информацию пользоват...
-

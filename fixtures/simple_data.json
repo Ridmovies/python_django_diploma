@@ -1,0 +1,227 @@
+[
+  {
+    "model": "product_app.product",
+    "pk": 1,
+    "fields": {
+      "title": "cat 1",
+      "description": "cat 1",
+      "fullDescription": "cat 1",
+      "price": "1.99",
+      "freeDelivery": true,
+      "count": 9,
+      "date": "2024-11-15T18:01:56.126",
+      "rating": "5.0",
+      "reviews_count": 1,
+      "category": 1,
+      "tags": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "product_app.product",
+    "pk": 2,
+    "fields": {
+      "title": "cat 2",
+      "description": "cat 2",
+      "fullDescription": "cat 2",
+      "price": "2.55",
+      "freeDelivery": true,
+      "count": 18,
+      "date": "2024-11-15T18:39:00.446",
+      "rating": "5.0",
+      "reviews_count": 0,
+      "category": 1,
+      "tags": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "product_app.category",
+    "pk": 1,
+    "fields": {
+      "title": "cats",
+      "parent": null
+    }
+  },
+  {
+    "model": "product_app.category",
+    "pk": 2,
+    "fields": {
+      "title": "funny",
+      "parent": 1
+    }
+  },
+  {
+    "model": "product_app.productimage",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "src": "products/images/1_A6riGh8.jpg",
+      "alt": "image"
+    }
+  },
+  {
+    "model": "product_app.productimage",
+    "pk": 2,
+    "fields": {
+      "product": 2,
+      "src": "products/images/2_qrLg2kd.jpg",
+      "alt": "image"
+    }
+  },
+  {
+    "model": "product_app.categoryimage",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "src": "categories/images/1_dzhZGB4.jpg",
+      "alt": "alt"
+    }
+  },
+  {
+    "model": "product_app.categoryimage",
+    "pk": 2,
+    "fields": {
+      "category": 2,
+      "src": "categories/images/4_N0pnMRy.jpg",
+      "alt": "alt"
+    }
+  },
+  {
+    "model": "product_app.tag",
+    "pk": 1,
+    "fields": {
+      "name": "cat"
+    }
+  },
+  {
+    "model": "product_app.review",
+    "pk": 1,
+    "fields": {
+      "author": "user",
+      "email": "example@example.com",
+      "text": "review",
+      "rate": 5,
+      "date": "2024-11-15T18:42:19.404",
+      "product": 1
+    }
+  },
+  {
+    "model": "product_app.specification",
+    "pk": 1,
+    "fields": {
+      "name": "spec",
+      "value": "spec",
+      "product": 1
+    }
+  },
+  {
+    "model": "auth_app.profile",
+    "pk": 2,
+    "fields": {
+      "fullName": "user",
+      "email": "example@example.com",
+      "phone": "666666666",
+      "avatar": 2
+    }
+  },
+  {
+    "model": "auth_app.avatar",
+    "pk": 1,
+    "fields": {
+      "src": "avatars/images/1_ghkGial.jpg",
+      "alt": "avatar"
+    }
+  },
+  {
+    "model": "auth_app.avatar",
+    "pk": 2,
+    "fields": {
+      "src": "avatars/images/4_N5cJKKU.jpg",
+      "alt": "avatar"
+    }
+  },
+  {
+    "model": "basket_app.basket",
+    "pk": 1,
+    "fields": {
+      "user": null,
+      "session_key": "kwqvatcg4jmfy1wq3l1gt9z3yy6zhvlh"
+    }
+  },
+  {
+    "model": "basket_app.basket",
+    "pk": 2,
+    "fields": {
+      "user": null,
+      "session_key": "cn4mv0rcl1srzg6e0mgnb7ggcamwgyl2"
+    }
+  },
+  {
+    "model": "basket_app.basket",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "session_key": null
+    }
+  },
+  {
+    "model": "basket_app.order",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "createdAt": "2024-11-15T18:44:40.337",
+      "fullName": "user",
+      "email": "example@example.com",
+      "phone": "666666666",
+      "deliveryType": "standard",
+      "paymentType": "online",
+      "totalCost": 7.09,
+      "status": "╬цшфрхЄ юяырЄ√",
+      "city": null,
+      "address": null
+    }
+  },
+  {
+    "model": "basket_app.orderproduct",
+    "pk": 1,
+    "fields": {
+      "product_id": 1,
+      "quantity": 1,
+      "basket": null,
+      "order": null
+    }
+  },
+  {
+    "model": "basket_app.orderproduct",
+    "pk": 2,
+    "fields": {
+      "product_id": 2,
+      "quantity": 2,
+      "basket": null,
+      "order": null
+    }
+  },
+  {
+    "model": "basket_app.orderproduct",
+    "pk": 3,
+    "fields": {
+      "product_id": 1,
+      "quantity": 1,
+      "basket": null,
+      "order": 1
+    }
+  },
+  {
+    "model": "basket_app.orderproduct",
+    "pk": 4,
+    "fields": {
+      "product_id": 2,
+      "quantity": 2,
+      "basket": null,
+      "order": 1
+    }
+  }
+]

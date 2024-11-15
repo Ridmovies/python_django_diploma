@@ -1,8 +1,5 @@
 from datetime import datetime, timedelta
 
-from django.http import HttpResponse
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView
@@ -87,7 +84,7 @@ class OrderDetailView(APIView):
         order: Order = Order.objects.get(id=id)
         if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
-        # update_order_info(request, order)
+        update_order_info(request, order)
         basket: Basket = Basket.objects.get(user=request.user)
         basket.products.clear()
         return Response({"orderId": order.id})
@@ -106,8 +103,3 @@ class OldOrdersListView(ListAPIView):
         createdAt__lt=datetime.now() - timedelta(days=3), status="Ожидает оплаты"
     )
     serializer_class = OrderSerializer
-
-
-def celery_test(request):
-    result = simple_add.delay(10, 20)
-    return HttpResponse(f"Task ID: {result.task_id}")

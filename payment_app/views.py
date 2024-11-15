@@ -63,7 +63,6 @@ class PaymentConfirmView(APIView):
 #         order.status = 'Ожидает оплаты'
 #         serializer = PaymentSerializer(payment, many=False)
 #         if credit_number[-1] != "0":
-#             # TODO DO validation
 #             order.status = 'Оплачено'
 #         elif credit_number[-1] == "0":
 #             order.status = 'Ошибка оплаты'
