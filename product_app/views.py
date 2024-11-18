@@ -11,9 +11,8 @@ from product_app.serializers import (
     ReviewSerializer,
     TagSerializer,
 )
-# from product_app.tasks import update_product_avg_rating
 from product_app.services import update_product_avg_rating
-from product_app.tasks import simple_task
+from product_app.tasks import simple_task, task_update_product_avg_rating
 
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
@@ -33,9 +32,8 @@ class ProductDetailApiView(RetrieveAPIView):
 class AddProductReviewApiView(APIView):
     def post(self, request: Request, id: int):
         review = Review.objects.create(**request.data, product_id=id)
-        # TODO Celery task
-        # update_product_avg_rating.delay(id)
-        update_product_avg_rating(id)
+        task_update_product_avg_rating.delay(id)
+        # update_product_avg_rating(id)
         serializer = ReviewSerializer(review, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
