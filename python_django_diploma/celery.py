@@ -1,6 +1,8 @@
 import os
 
 from celery import Celery
+from celery.schedules import crontab
+# from product_app import tasks
 
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "python_django_diploma.settings")
@@ -17,9 +19,10 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-# beat_schedule = {
-#     'run-every-minute': {
-#         'task': 'tasks.my_task',
-#         'schedule': 60.0,
-#     },
-# }
+app.conf.beat_schedule = {
+    'add-every-monday-morning': {
+        'task': 'product_app.tasks.simple_beats_task',
+        'schedule': crontab(minute='*/1'),
+        'args': (16, 16),
+    },
+}

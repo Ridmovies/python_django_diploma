@@ -77,9 +77,8 @@ python manage.py loaddata fixtures/all_data.json
    python manage.py migrate
    ```
 
-### Запустить Redis на локальной машине
 
-8. Start your application:   
+7. Start your application:   
    ```bash
     python manage.py runserver
    ```
@@ -124,7 +123,7 @@ python manage.py loaddata product_app.Product >fixtures/products-fixtures.json -
 ### Импорт всех данных:
 
 ```bash
-python manage.py loaddata fixtures/all_data.json
+python manage.py loaddata fixtures/simple_data.json
 ```
 
 
@@ -188,6 +187,14 @@ docker rm $(docker ps -aq)
 sudo service redis-server start
 ```
 
+### Проверка состояния через команду PING
+Команда PING отправляет запрос серверу Redis и ожидает ответа. Если сервер отвечает «PONG», значит он доступен и готов принимать команды.
+
+```bash
+redis-cli PING
+```
+
+
 ### Запустить Redis в Docker
 ```bash
 docker build -f Dockerfile-redis -t my-redis-image .
@@ -199,7 +206,17 @@ docker run -p 6379:6379 my-redis-image
 docker-compose -f docker-compose-dev.yml up
 ```
 
+## Команды для работы с Celery
+### Starting the worker process
+```bash
+celery -A python_django_diploma worker -l INFO
+```
 
+### Starting the Scheduler
+To start the celery beat service:
+```bash
+celery -A python_django_diploma beat -l INFO
+```
 
 ## Линтеры:
 ```bash
@@ -209,6 +226,40 @@ isort --check-only --diff --profile black .\product_app\views.py
 
 mypy --incremental ./product_app/views.py 
 ```
+
+
+
+## Работа с postgres
+### Шаг 1: Подключение к серверу PostgreSQL
+```bash
+psql -U postgres
+```
+
+### Шаг 2: Создание новой базы данных
+
+Создайте новую базу данных с именем `megano`:
+
+```sql
+CREATE DATABASE megano;
+```
+
+### Шаг 3: Создание нового пользователя
+
+Создайте нового пользователя с именем `postgres` и паролем `root`:
+
+```sql
+CREATE USER postgres WITH PASSWORD 'root';
+```
+
+### Проверка
+
+Теперь вы можете проверить подключение к базе данных `megano` с пользователем `postgres`. Выйдите из текущего сеанса `psql`, а затем подключитесь заново:
+
+```bash
+\q
+psql -h localhost -p 5432 -d megano -U postgres
+```
+
 
 
 ## Тестирование

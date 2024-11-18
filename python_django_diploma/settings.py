@@ -26,12 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-befg#o&21qv7b4gp=mrw87w#_@g!*xn9=ttqcp=33junsd0oy!"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list[str] = []
+ALLOWED_HOSTS: list[str] = ["*"]
 
 INTERNAL_IPS = [
     # ...
@@ -98,35 +98,35 @@ WSGI_APPLICATION = "python_django_diploma.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+if os.getenv("DOCKER_RUNTIME"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": os.environ.get("DOCKER_DB_HOST"),
+            "NAME": os.environ.get("DOCKER_DB_NAME"),
+            "USER": os.environ.get("DOCKER_DB_USER"),
+            "PASSWORD": os.environ.get("DOCKER_DB_PASS"),
+        }
     }
-}
 
-
-# if os.getenv("DOCKER_RUNTIME"):
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql",
-#             "HOST": os.environ.get("DOCKER_DB_HOST"),
-#             "NAME": os.environ.get("DOCKER_DB_NAME"),
-#             "USER": os.environ.get("DOCKER_DB_USER"),
-#             "PASSWORD": os.environ.get("DOCKER_DB_PASS"),
-#         }
-#     }
-#
-# else:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql",
-#             "HOST": os.environ.get("DB_HOST"),
-#             "NAME": os.environ.get("DB_NAME"),
-#             "USER": os.environ.get("DB_USER"),
-#             "PASSWORD": os.environ.get("DB_PASS"),
-#         }
-#     }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": os.environ.get("DB_HOST"),
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASS"),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -217,8 +217,10 @@ CACHES = {
 CACHE_MIDDLEWARE_SECONDS = 5 * 1
 
 # Celery settings
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/0"
+
 
 # LOGGING = {
 #     'version': 1,

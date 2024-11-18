@@ -13,6 +13,7 @@ from product_app.serializers import (
 )
 # from product_app.tasks import update_product_avg_rating
 from product_app.services import update_product_avg_rating
+from product_app.tasks import simple_task
 
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
@@ -43,3 +44,9 @@ class AddProductReviewApiView(APIView):
 class TagsListView(ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+class CeleryTestApi(APIView):
+    def get(self, request: Request):
+        simple_task.delay(5, 4)
+        return Response({"celery": "test"})
