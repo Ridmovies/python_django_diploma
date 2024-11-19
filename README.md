@@ -262,3 +262,6 @@ psql -h localhost -p 5432 -d megano -U postgres
 ```bash
 python manage.py test
 ```
+
+
+
