@@ -101,9 +101,6 @@ python manage.py createsuperuser --username=root --email=root@example.com
         http://127.0.0.1:8000/api/schema/swagger-ui/
 
 
-   ```bash
-
-```
 
 # Develop
 
@@ -259,7 +256,6 @@ CREATE USER postgres WITH PASSWORD 'root';
 \q
 psql -h localhost -p 5432 -d megano -U postgres
 ```
-
 
 
 ## Тестирование
