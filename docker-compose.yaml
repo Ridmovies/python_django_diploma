@@ -5,7 +5,8 @@ services:
     command: >
       bash -c "
         python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:5000
+        python manage.py runserver 0.0.0.0:5000 &&
+        celery -A python_django_diploma worker -l INFO
       "
     container_name: megano
     environment:
@@ -29,25 +30,9 @@ services:
     expose:
       - 5432
 
-#  celery_worker:
-#    image: python_django_diploma-web
-#    command: celery -A python_django_diploma worker -l info
-#    depends_on:
-#      - web
-#      - redis
 
   redis:
     image: redis:alpine
-
-  #
-  #  celery_beat:
-  #    image: python_django_diploma-web
-  #    command: celery -A python_django_diploma beat -l INFO
-  #    depends_on:
-  #      - web
-  #      - redis
-  #
-
 
 volumes:
   pgdata:

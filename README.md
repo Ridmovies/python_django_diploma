@@ -17,11 +17,6 @@
 - Redis
 
 
-## Fast install with Docker and sqlite
-```bash
-docker-compose -f sqlite-docker-compose.yaml up --build
-```
-
 ## Installation with Docker
 1. Clone the repo
    ```bash
@@ -39,18 +34,17 @@ cd python_advanced_diploma
 
 4. Run docker-compose 
    ```bash
-    docker-compose up 
+    docker-compose up --build
    ```
    
-### Creating a superuser
+5. Creating a superuser
 ```bash
 docker exec -it megano python manage.py createsuperuser
 ```
 
-### Импорт всех данных:
-
+6. Starting the Celery worker process
 ```bash
-python manage.py loaddata fixtures/all_data.json
+docker exec -it megano celery -A python_django_diploma worker -l INFO
 ```
 
 
@@ -204,17 +198,6 @@ sudo service redis-server start
 redis-cli PING
 ```
 
-
-### Запустить Redis в Docker
-```bash
-docker build -f Dockerfile-redis -t my-redis-image .
-docker run -p 6379:6379 my-redis-image
-```
-
-### Запустить Redis и Celery в Docker
-```bash
-docker-compose -f docker-compose-dev.yml up
-```
 
 ## Команды для работы с Celery
 ### Starting the worker process
