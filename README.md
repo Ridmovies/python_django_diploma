@@ -1,18 +1,26 @@
 
-# Megano
+# Интернет магазин Megano 
 
-## Description
-This project is a backend for an online store, developed using Django, Django REST framework and Redis. 
-It includes a system of authorization, registration, user credentials management, 
-as well as the functionality of a product catalog, a review system, a shopping cart and checkout.
+## Описание
+Этот проект представляет собой бэкенд для интернет-магазина, разработанный с использованием Django, фреймворка Django REST и Redis.
+Он включает в себя систему авторизации, регистрации, управления учетными данными пользователей,
+а также функционал каталога товаров, системы отзывов, корзины покупок и оформления заказа.
+
+## Используемые инструменты:
+- Django
+- Django ORM
+- Django REST framework
+- Docker
+- Docker compose
+- Postgresql
+- Celery 
+- Redis
 
 
 ## Fast install with Docker and sqlite
 ```bash
 docker-compose -f sqlite-docker-compose.yaml up --build
 ```
-
-
 
 ## Installation with Docker
 1. Clone the repo
@@ -77,11 +85,16 @@ python manage.py loaddata fixtures/all_data.json
    python manage.py migrate
    ```
 
-
 7. Start your application:   
    ```bash
     python manage.py runserver
    ```
+   
+
+8. Starting the Celery worker process
+```bash
+celery -A python_django_diploma worker -l INFO
+```
    
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -229,7 +242,7 @@ mypy --incremental ./product_app/views.py
 ## Работа с postgres
 ### Шаг 1: Подключение к серверу PostgreSQL
 ```bash
-psql -U postgres
+sudo -u postgres psql
 ```
 
 ### Шаг 2: Создание новой базы данных

@@ -23,7 +23,10 @@ from python_django_diploma.settings import BANNERS_AMOUNT, LIMITED_COUNT, POPULA
 
 @extend_schema(tags=["catalog"], responses=ProductFullSerializer)
 class PopularProductsListApi(generics.ListAPIView):
-    queryset = Product.objects.filter(rating__gte=POPULAR_RATING)
+    queryset = Product.objects.filter(
+        rating__gte=POPULAR_RATING,
+        reviews_count__gte=1,
+    )
     serializer_class = ProductFullSerializer
 
 

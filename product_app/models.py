@@ -12,7 +12,7 @@ class Product(models.Model):
     count = models.SmallIntegerField(default=1)
     # Automatically set the field to now when the object is first created.
     date = models.DateTimeField(auto_now_add=True, null=True)
-    rating = models.DecimalField(default=0.2, max_digits=2, decimal_places=1)
+    rating = models.DecimalField(default=5, max_digits=2, decimal_places=1)
     # Добавляем новое поле для хранения количества отзывов
     reviews_count = models.IntegerField(default=0)
     category = models.ForeignKey(
