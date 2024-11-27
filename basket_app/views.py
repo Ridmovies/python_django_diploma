@@ -56,7 +56,7 @@ class BasketView(APIView):
 class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request) -> Response:
-        # Создание заказа
+        """ Оформление заказа """
         basket: Basket = Basket.objects.get(user=request.user)
         new_order = create_new_order(request)
         add_products_in_order(request, basket, new_order)
@@ -79,6 +79,7 @@ class OrderDetailView(APIView):
         if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
         update_order_info(request, order)
+        # TODO Очищение корзины должно происходить во время подтверждения оплаты
         basket: Basket = Basket.objects.get(user=request.user)
         basket.products.clear()
         return Response({"orderId": order.id})

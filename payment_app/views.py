@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from basket_app.models import Order
-from payment_app.payment import get_payment_confirm, get_payment_info, get_payments_list
+from payment_app.payment import get_payment_info, get_payments_list
 
 
 class PaymentListView(APIView):
@@ -39,17 +39,17 @@ class PaymentInfoView(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class PaymentConfirmView(APIView):
-    @extend_schema(tags=["payment"])
-    def post(self, request: Request, payment_id: str) -> Response:
-        get_payment_confirm(payment_id)
-        payment_info = get_payment_info(payment_id)
-        if payment_info.status == "succeeded":
-            order_id = payment_info.metadata.get("orderId")
-            order = Order.objects.get(id=order_id)
-            order.status = "Оплачено"
-            order.save()
-        return Response(status=status.HTTP_200_OK)
+# class PaymentConfirmView(APIView):
+#     @extend_schema(tags=["payment"])
+#     def post(self, request: Request, payment_id: str) -> Response:
+#         get_payment_confirm(payment_id)
+#         payment_info = get_payment_info(payment_id)
+#         if payment_info.status == "succeeded":
+#             order_id = payment_info.metadata.get("orderId")
+#             order = Order.objects.get(id=order_id)
+#             order.status = "Оплачено"
+#             order.save()
+#         return Response(status=status.HTTP_200_OK)
 
 
 # class PaymentView(APIView):

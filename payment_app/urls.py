@@ -1,7 +1,7 @@
 from django.urls import path
 
-from payment_app.views import (  # PaymentView,
-    PaymentConfirmView,
+from payment_app.views import (
+    # PaymentConfirmView,
     PaymentInfoView,
     PaymentListView,
     PaymentNotification,

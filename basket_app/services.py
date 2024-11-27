@@ -74,7 +74,7 @@ def update_order_info(request: Request, order: Order) -> None:
 
 def create_new_order(request: Request):
     new_order: Order = Order.objects.create(user=request.user)
-    new_order.totalCost = Decimal(0)
+    new_order.totalCost = 0
     profile: Profile = Profile.objects.get(user=request.user)
     new_order.email = profile.email
     new_order.phone = profile.phone
@@ -88,12 +88,13 @@ def add_products_in_order(request: Request, basket: Basket, new_order: Order):
     for product in request.data:
         product_id = product.get("id")
         quantity = product.get("count")
-        order_product: OrderProduct = OrderProduct.objects.create(
+        order_product: OrderProduct = OrderProduct.objects.get(
             product_id=product_id,
             quantity=quantity,
             basket=basket,
-            order=new_order,
         )
+        order_product.order_id = new_order.id
+        order_product.save()
         new_order.products.add(order_product)
         # Calculate Order's totalCost
         # Фронт сам считает totalCost

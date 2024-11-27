@@ -50,10 +50,10 @@ def get_payments_list():
     return res
 
 
-def get_payment_confirm(payment_id: str):
-    response = Payment.capture(
-        # TODO HARDCODE
-        payment_id,
-        {"amount": {"value": "2.00", "currency": "RUB"}},
-        idempotence_key,
-    )
+# def get_payment_confirm(payment_id: str):
+#     response = Payment.capture(
+#         # TODO HARDCODE
+#         payment_id,
+#         {"amount": {"value": "2.00", "currency": "RUB"}},
+#         idempotence_key,
+#     )
