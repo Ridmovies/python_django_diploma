@@ -1,4 +1,5 @@
 from django.utils.decorators import method_decorator
+from django.utils.timezone import now
 from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
@@ -51,7 +52,7 @@ class CategoriesListView(generics.ListAPIView):
 
 @extend_schema(tags=["catalog"], responses=SaleSerializer)
 class SaleApi(generics.ListAPIView):
-    queryset = Sale.objects.all().order_by("id")
+    queryset = Sale.objects.filter(dateTo__gt=now()).order_by("id")
     serializer_class = SaleSerializer
     pagination_class = CustomPagination
 
