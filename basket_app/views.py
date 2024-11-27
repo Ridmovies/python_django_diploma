@@ -14,10 +14,9 @@ from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import (
     add_product_to_basket,
     add_products_in_order,
-    cancel_order_product,
     create_new_order,
     get_or_create_basket,
-    update_order_info,
+    update_order_info, remove_product_from_basket,
 )
 
 
@@ -49,15 +48,7 @@ class BasketView(APIView):
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def delete(self, request: Request) -> Response:
         basket: Basket = get_or_create_basket(request)
-        product_id = request.data.get("id")
-        # TODO Возвращает более одного заказа
-        order_product: OrderProduct = OrderProduct.objects.get(
-            product_id=product_id,
-            basket=basket,
-        )
-        if order_product:
-            cancel_order_product(order_product, product_id)
-
+        remove_product_from_basket(request, basket)
         serializer = OrderProductSerializer(basket.products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -73,7 +64,6 @@ class OrdersListView(APIView):
 
     @extend_schema(tags=["order"])
     def get(self, request: Request) -> Response:
-        # TODO Clean not active orders
         order: Order = Order.objects.filter(
             user=request.user, status__isnull=False
         ).order_by("-createdAt")

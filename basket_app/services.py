@@ -58,14 +58,6 @@ def add_product_to_basket(product_id, count, basket):
     return product_order
 
 
-@transaction.atomic
-def cancel_order_product(order_product: OrderProduct, product_id: int):
-    product: Product = Product.objects.get(id=product_id)
-    product.count += int(order_product.quantity)
-    product.save()
-    order_product.delete()
-
-
 def update_order_info(request: Request, order: Order) -> None:
     data: dict = request.data
     order.status = "Ожидает оплаты"
@@ -112,3 +104,31 @@ def add_products_in_order(request: Request, basket: Basket, new_order: Order):
             rounding=ROUND_HALF_UP
         )
         new_order.save()
+
+
+# @transaction.atomic
+# def cancel_order_product(order_product: OrderProduct, product_id: int):
+#     product: Product = Product.objects.get(id=product_id)
+#     product.count += int(order_product.quantity)
+#     product.save()
+#     order_product.delete()
+
+
+def remove_product_from_basket(request, basket: Basket):
+    product_id: int = request.data.get("id")
+    count: str = request.data.get("count")
+    order_product: OrderProduct = OrderProduct.objects.get(
+        product_id=product_id,
+        basket=basket,
+    )
+
+    product: Product = Product.objects.get(id=product_id)
+    if order_product.quantity > int(count):
+        order_product.quantity -= int(count)
+        product.count += int(count)
+        order_product.save()
+        product.save()
+    else:
+        product.count += int(order_product.quantity)
+        product.save()
+        order_product.delete()
