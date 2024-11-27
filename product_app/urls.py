@@ -4,7 +4,6 @@ from product_app.views import (
     AddProductReviewApiView,
     ProductDetailApiView,
     TagsListView,
-    CeleryTestApi,
 )
 
 app_name = "product"
@@ -15,5 +14,4 @@ urlpatterns = [
     path(
         "product/<int:id>/reviews", AddProductReviewApiView.as_view(), name="add_review"
     ),
-    path("celery/", CeleryTestApi.as_view())
 ]

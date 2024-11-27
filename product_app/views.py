@@ -49,7 +49,3 @@ class TagsListView(ListAPIView):
     serializer_class = TagSerializer
 
 
-class CeleryTestApi(APIView):
-    def get(self, request: Request):
-        simple_task.delay(5, 4)
-        return Response({"celery": "test"})
