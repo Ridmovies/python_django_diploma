@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.http import HttpResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView
@@ -83,6 +84,7 @@ class OrdersListView(APIView):
 class OrderDetailView(APIView):
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def post(self, request: Request, id: int) -> Response:
+        """ Оплатить """
         order: Order = Order.objects.get(id=id)
         if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
@@ -105,3 +107,15 @@ class OldOrdersListView(ListAPIView):
         createdAt__lt=datetime.now() - timedelta(days=3), status="Ожидает оплаты"
     )
     serializer_class = OrderSerializer
+
+
+def clean_old_orders(request) -> HttpResponse:
+    """
+    Удаление заказов старше одного дня
+    """
+    Order.objects.filter(
+        createdAt__lt=datetime.now() - timedelta(days=1),
+        status__in=["Оформление заказа", "Ожидает оплаты"],
+    ).delete()
+    return HttpResponse('Orders cleaned successfully.', content_type='text/plain')
+

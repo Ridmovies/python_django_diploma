@@ -26,8 +26,6 @@ def get_or_create_basket(request: Request):
 
 def check_product_count(product_id: int, count: int):
     product = Product.objects.get(id=product_id)
-    print(f"{product.count=}")
-    print(f"{count=}")
     if int(count) <= int(product.count):
         print(int(count) <= int(product.count))
         return product
@@ -39,7 +37,7 @@ def check_product_count(product_id: int, count: int):
 def add_product_to_basket(product_id, count, basket):
     product = check_product_count(product_id, count)
 
-    product_order, created = OrderProduct.objects.get_or_create(
+    product_order, created = OrderProduct.objects.filter(order_id=None).get_or_create(
         product_id=product.id, basket=basket
     )
 
@@ -89,6 +87,7 @@ def create_new_order(request: Request):
     new_order.email = profile.email
     new_order.phone = profile.phone
     new_order.fullName = profile.fullName
+    new_order.status = "Оформление заказа"
     new_order.save()
     return new_order
 
