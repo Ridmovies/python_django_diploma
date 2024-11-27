@@ -45,10 +45,6 @@ class SignUpApiView(APIView):
         try:
             user = User.objects.create_user(username=username, password=password)
             login(request, user)
-
-            Basket.objects.create(user=request.user)
-            Profile.objects.create(user=request.user)
-
             return Response(status=status.HTTP_201_CREATED)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
