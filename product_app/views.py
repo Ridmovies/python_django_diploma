@@ -13,6 +13,7 @@ from product_app.serializers import (
 )
 from product_app.services import update_product_avg_rating
 from product_app.tasks import simple_task, task_update_product_avg_rating
+from python_django_diploma.settings import DEBUG
 
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
@@ -32,8 +33,11 @@ class ProductDetailApiView(RetrieveAPIView):
 class AddProductReviewApiView(APIView):
     def post(self, request: Request, id: int):
         review = Review.objects.create(**request.data, product_id=id)
-        task_update_product_avg_rating.delay(id)
-        # update_product_avg_rating(id)
+        if DEBUG:
+            update_product_avg_rating(id)
+        else:
+            # Use celery
+            task_update_product_avg_rating.delay(id)
         serializer = ReviewSerializer(review, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
