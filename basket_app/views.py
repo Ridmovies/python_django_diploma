@@ -30,6 +30,7 @@ class BasketView(APIView):
 
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def post(self, request: Request) -> Response:
+        """ ADD TO CART """
         product_id: int = request.data.get("id", None)
         count: str = request.data.get("count", None)
         basket: Basket = get_or_create_basket(request)
@@ -48,6 +49,7 @@ class BasketView(APIView):
     def delete(self, request: Request) -> Response:
         basket: Basket = get_or_create_basket(request)
         product_id = request.data.get("id")
+        # TODO Возвращает более одного заказа
         order_product: OrderProduct = OrderProduct.objects.get(
             product_id=product_id,
             basket=basket,

@@ -24,27 +24,38 @@ def get_or_create_basket(request: Request):
         return basket
 
 
-def add_product_to_basket(product_id, count, basket):
-    try:
-        product = Product.objects.get(id=product_id)
-    except Product.DoesNotExist:
-        raise ValueError(f"Product with ID {product_id} does not exist.")
-
-    if int(count) > product.count:
+def check_product_count(product_id: int, count: int):
+    product = Product.objects.get(id=product_id)
+    print(f"{product.count=}")
+    print(f"{count=}")
+    if int(count) <= int(product.count):
+        print(int(count) <= int(product.count))
+        return product
+    else:
         message = f"You can order only {product.count} products."
         raise Exception(message)
+
+
+def add_product_to_basket(product_id, count, basket):
+    product = check_product_count(product_id, count)
 
     product_order, created = OrderProduct.objects.get_or_create(
         product_id=product.id, basket=basket
     )
 
     if created:
+        # Если продукта не было в корзине:
         product_order.quantity = count
         product_order.save()
         product.count -= int(count)
         product.save()
     else:
-        raise RuntimeError("Product already in basket")
+        # Добавление продукта если продукт уже в корзине:
+        product = check_product_count(product_id, count)
+        product_order.quantity += int(count)
+        product_order.save()
+        product.count -= int(count)
+        product.save()
 
     return product_order
 
