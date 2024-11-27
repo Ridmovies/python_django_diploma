@@ -1,6 +1,4 @@
-from django.utils.decorators import method_decorator
 from django.utils.timezone import now
-from django.views.decorators.cache import cache_page
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.filters import SearchFilter

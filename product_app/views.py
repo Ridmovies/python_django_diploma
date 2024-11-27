@@ -12,8 +12,8 @@ from product_app.serializers import (
     TagSerializer,
 )
 from product_app.services import update_product_avg_rating
-from product_app.tasks import simple_task, task_update_product_avg_rating
-from python_django_diploma.settings import DEBUG
+from django.conf import settings
+from product_app.tasks import simple_task
 
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
@@ -35,7 +35,7 @@ class AddProductReviewApiView(APIView):
         review = Review.objects.create(**request.data, product_id=id)
         # Обновление среднего рейтинга через сигналы
         # Обновление среднего рейтинга через сервис или через celery
-        # if DEBUG:
+        # if settings.DEBUG:
         #     update_product_avg_rating(id)
         # else:
         #     task_update_product_avg_rating.delay(id)

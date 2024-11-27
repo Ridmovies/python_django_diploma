@@ -13,8 +13,7 @@ from rest_framework.views import APIView
 
 from auth_app.models import Avatar, Profile
 from auth_app.serializers import ProfileSerializer
-from basket_app.models import Basket
-from python_django_diploma.settings import MEDIA_URL
+from django.conf import settings
 
 
 class LoginApiView(APIView):
@@ -91,8 +90,7 @@ class ProfileAvatarView(APIView):
         avatar: Avatar = Avatar.objects.create(src=avatar)
         old_avatar_src = None
         if profile.avatar:
-            # Can't load MEDIA_URL from django.conf. settings
-            old_avatar_src = MEDIA_URL + str(profile.avatar.src)
+            old_avatar_src = settings.LOGIN_URL + str(profile.avatar.src)
         profile.avatar = avatar
         profile.save()
         if old_avatar_src:
