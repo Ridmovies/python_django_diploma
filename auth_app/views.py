@@ -70,7 +70,8 @@ class ProfileView(generics.RetrieveAPIView):
 
     def get_object(self) -> Profile:
         # Получаем профиль текущего пользователя
-        return Profile.objects.get(user=self.request.user)
+        profile: Profile = Profile.objects.get(user=self.request.user)
+        return profile
 
     def post(self, request: Request) -> Response:
         data = request.data

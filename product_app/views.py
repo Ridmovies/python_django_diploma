@@ -33,11 +33,12 @@ class ProductDetailApiView(RetrieveAPIView):
 class AddProductReviewApiView(APIView):
     def post(self, request: Request, id: int):
         review = Review.objects.create(**request.data, product_id=id)
-        if DEBUG:
-            update_product_avg_rating(id)
-        else:
-            # Use celery
-            task_update_product_avg_rating.delay(id)
+        # Обновление среднего рейтинга через сигналы
+        # Обновление среднего рейтинга через сервис или через celery
+        # if DEBUG:
+        #     update_product_avg_rating(id)
+        # else:
+        #     task_update_product_avg_rating.delay(id)
         serializer = ReviewSerializer(review, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

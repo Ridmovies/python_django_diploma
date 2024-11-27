@@ -3,11 +3,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from product_app.models import Review, Product
+from product_app.services import update_product_avg_rating
 
 
 @receiver(post_save, sender=Review)
 def update_reviews_count(sender, instance, created, **kwargs):
     if created:
+        # Обновление среднего рейтинга через сигналы
+        update_product_avg_rating(instance.product_id)
         # Если отзыв был создан, увеличиваем счетчик
         instance.product.reviews_count += 1
         # Сохраняем изменения в базе данных
