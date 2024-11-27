@@ -1,5 +1,7 @@
+from _decimal import ROUND_HALF_UP
 from django.db import transaction
 from rest_framework.request import Request
+from decimal import Decimal
 
 from auth_app.models import Profile
 from basket_app.models import Basket, Order, OrderProduct
@@ -71,7 +73,7 @@ def update_order_info(request: Request, order: Order) -> None:
 
 def create_new_order(request: Request):
     new_order: Order = Order.objects.create(user=request.user)
-    new_order.totalCost = 0
+    new_order.totalCost = Decimal(0)
     profile: Profile = Profile.objects.get(user=request.user)
     new_order.email = profile.email
     new_order.phone = profile.phone
@@ -92,7 +94,11 @@ def add_products_in_order(request: Request, basket: Basket, new_order: Order):
         )
         new_order.products.add(order_product)
         # Calculate Order's totalCost
-        product_price: float = Product.objects.get(id=product_id).price
-        products_cost: float = product_price * quantity
-        new_order.totalCost += products_cost
+        # Фронт сам считает totalCost
+        product_price: Decimal = Product.objects.get(id=product_id).price
+        products_cost: Decimal = product_price * quantity
+        new_order.totalCost += products_cost.quantize(
+            Decimal('.01'),
+            rounding=ROUND_HALF_UP
+        )
         new_order.save()

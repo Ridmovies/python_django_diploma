@@ -18,14 +18,12 @@ class Order(models.Model):
     # Оформление заказа
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     createdAt = models.DateTimeField(auto_now_add=True)
-    # example: 2023 - 05 - 05 12: 12
     fullName = models.CharField(max_length=128, null=True)
     email = models.EmailField(null=True)
     phone = models.CharField(max_length=11, null=True)
     deliveryType = models.CharField(max_length=12, null=True)
     paymentType = models.CharField(max_length=12, null=True)
-    totalCost = models.FloatField(null=True)
-    # example: 567.8
+    totalCost = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     status = models.CharField(max_length=24, null=True)
     city = models.CharField(max_length=24, null=True)
     address = models.CharField(max_length=64, null=True)
