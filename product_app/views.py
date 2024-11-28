@@ -18,7 +18,6 @@ from product_app.tasks import simple_task
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
 class ProductDetailApiView(RetrieveAPIView):
-    # queryset = Product.objects.all()
     queryset = Product.objects.prefetch_related(
         'images',
         'tags',
