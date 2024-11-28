@@ -43,19 +43,8 @@ def get_confirmation_url(value: str, description: str, order_id: int):
 
 
 def get_payment_info(payment_id: str):
+    """ Получение информации о платеже """
     payment = Payment.find_one(payment_id)
     return payment
 
 
-def get_payments_list():
-    res = Payment.list()
-    return res
-
-
-# def get_payment_confirm(payment_id: str):
-#     response = Payment.capture(
-#         # TODO HARDCODE
-#         payment_id,
-#         {"amount": {"value": "2.00", "currency": "RUB"}},
-#         idempotence_key,
-#     )

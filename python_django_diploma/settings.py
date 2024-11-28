@@ -178,7 +178,8 @@ PAGE_SIZE = 20
 BANNERS_AMOUNT = 2
 POPULAR_RATING = 4
 LIMITED_COUNT = 5
-BASE_URL = "http://localhost:8000"
+BASE_URL = "http://127.0.0.1:8000"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
