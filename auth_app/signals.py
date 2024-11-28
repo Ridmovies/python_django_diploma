@@ -10,7 +10,6 @@ from basket_app.models import Basket
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        print(f"{instance}")
         Profile.objects.create(user=instance)
         Basket.objects.create(user=instance)
 

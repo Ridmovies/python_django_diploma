@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 from rest_framework.request import Request
@@ -9,25 +10,27 @@ from payment_app.payment import get_payment_info
 
 
 class PaymentNotification(APIView):
+    @csrf_exempt
     @extend_schema(
         tags=["payment"],
         summary="Подтверждение платежа",
         description="Проверка ответа от YooKassa, если succeeded меняем статус заказа на оплачено",
-        # parameters=[
-        #     OpenApiParameter(
-        #         name='payment_id',
-        #         type=str,
-        #         location=OpenApiParameter.PATH,
-        #         required=True,
-        #         description="ID платежа для подтверждения.",
-        #     ),
-        # ],
+        parameters=[
+            OpenApiParameter(
+                name='payment_id',
+                type=str,
+                location=OpenApiParameter.PATH,
+                required=True,
+                description="ID платежа для подтверждения.",
+            ),
+        ],
     )
     def post(self, request: Request, payment_id: str) -> Response:
         """ Проверка ответа от YooKassa, если succeeded меняем статус заказа на оплачено """
         payment_info = get_payment_info(payment_id)
         order_id = payment_info.metadata.get("orderId")
         order = Order.objects.get(id=order_id)
+        print(f"{payment_info=}")
         if payment_info.status == "succeeded":
             order.status = "Оплачено"
             order.save()

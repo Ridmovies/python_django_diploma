@@ -27,7 +27,6 @@ def get_or_create_basket(request: Request):
 def check_product_count(product_id: int, count: int):
     product = Product.objects.get(id=product_id)
     if int(count) <= int(product.count):
-        print(int(count) <= int(product.count))
         return product
     else:
         message = f"You can order only {product.count} products."
