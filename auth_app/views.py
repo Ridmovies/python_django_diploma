@@ -4,6 +4,7 @@ import os
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
@@ -84,9 +85,19 @@ class ProfileView(generics.RetrieveAPIView):
 class ProfileAvatarView(APIView):
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        avatar = request.FILES["avatar"]
+        """Создание и обновление аватара"""
+        # TODO Вынести в сервисный уровень проверку и удаление аватара
+        file_obj = request.FILES["avatar"]
+
+        # Установка максимального допустимого размера файла (например, 5 МБ)
+        max_file_size = 5 * 1024 * 1024  # 5 MB
+
+        # Проверяем размер файла
+        if file_obj.size > max_file_size:
+            raise ValidationError(f'Размер файла превышает {max_file_size / 1024 / 1024:.2f} МБ.')
+
         profile = Profile.objects.get(user=request.user)
-        avatar: Avatar = Avatar.objects.create(src=avatar)
+        avatar: Avatar = Avatar.objects.create(src=file_obj)
         old_avatar_src = None
         if profile.avatar:
             old_avatar_src = settings.LOGIN_URL + str(profile.avatar.src)
