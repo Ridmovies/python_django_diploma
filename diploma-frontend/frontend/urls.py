@@ -21,7 +21,6 @@ urlpatterns = [
     path(
         "payment/<int:id>/", TemplateView.as_view(template_name="frontend/payment.html")
     ),
-    # path('payment/<int:id>/', PaymentYooKassaView.as_view()),
     path(
         "payment-someone/",
         TemplateView.as_view(template_name="frontend/paymentsomeone.html"),

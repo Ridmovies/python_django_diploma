@@ -1,6 +1,7 @@
 import os
 import uuid
 
+from django.conf import settings
 from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
@@ -14,7 +15,8 @@ idempotence_key = str(uuid.uuid4())
 
 
 def get_confirmation_url(value: str, description: str, order_id: int):
-    return_url = "http://127.0.0.1:8000"
+    """ Генерация ссылки на оплату """
+    return_url = settings.BASE_URL
     payment = Payment.create(
         {
             "amount": {"value": value, "currency": "RUB"},

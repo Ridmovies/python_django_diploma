@@ -3,8 +3,11 @@ from django.views.generic import TemplateView
 
 from frontend.views import PaymentYooKassaView
 
+
+app_name = "frontend"
+
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="frontend/index.html")),
+    path("", TemplateView.as_view(template_name="frontend/index.html"),  name="index"),
     path("about/", TemplateView.as_view(template_name="frontend/about.html")),
     path("cart/", TemplateView.as_view(template_name="frontend/cart.html")),
     path("catalog/", TemplateView.as_view(template_name="frontend/catalog.html")),
@@ -21,6 +24,7 @@ urlpatterns = [
     ),
     path("orders/<int:id>/", TemplateView.as_view(template_name="frontend/order.html")),
     # path('payment/<int:id>/', TemplateView.as_view(template_name="frontend/payment.html")),
+    # Заменяем базовый шаблон оплаты
     path("payment/<int:id>/", PaymentYooKassaView.as_view()),
     path(
         "payment-someone/",
