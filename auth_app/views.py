@@ -84,7 +84,6 @@ class ProfileView(generics.RetrieveAPIView):
 class ProfileAvatarView(APIView):
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        # TODO too much avatar var
         avatar = request.FILES["avatar"]
         profile = Profile.objects.get(user=request.user)
         avatar: Avatar = Avatar.objects.create(src=avatar)

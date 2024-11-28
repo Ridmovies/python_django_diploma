@@ -168,7 +168,7 @@ LOGIN_REDIRECT_URL = "/profiles/home"
 MEDIA_ROOT = BASE_DIR / "media/"
 
 # My settings
-PAGE_SIZE = 20
+PAGE_SIZE = 2
 BANNERS_AMOUNT = 2
 POPULAR_RATING = 4
 LIMITED_COUNT = 5
@@ -215,19 +215,19 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/0"
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     }
+# }

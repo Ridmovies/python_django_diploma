@@ -1,6 +1,8 @@
 import os
 import uuid
+from _pydecimal import Decimal
 
+import requests
 from django.conf import settings
 from dotenv import load_dotenv
 from rest_framework import status
@@ -47,4 +49,21 @@ def get_payment_info(payment_id: str):
     payment = Payment.find_one(payment_id)
     return payment
 
+
+def get_usd_rate():
+    # URL для получения курсов валют от ЦБ РФ
+    url = 'https://www.cbr-xml-daily.ru/daily_json.js'
+
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            usd_rate = data['Valute']['USD']['Value']
+            return Decimal(round(usd_rate, 4))
+        else:
+            print(f'Ошибка при получении данных: статус-код {response.status_code}')
+            return None
+    except Exception as e:
+        print(f'Произошла ошибка: {e}')
+        return None
 

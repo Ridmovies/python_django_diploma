@@ -16,7 +16,7 @@ from basket_app.services import (
     add_products_in_order,
     create_new_order,
     get_or_create_basket,
-    update_order_info, remove_product_from_basket,
+    update_order_info, remove_product_from_basket
 )
 
 
@@ -58,6 +58,11 @@ class OrdersListView(APIView):
     def post(self, request: Request) -> Response:
         """ Оформление заказа """
         basket: Basket = Basket.objects.get(user=request.user)
+        # basket: Basket = get_or_create_basket(request)
+        # if request.user.is_authenticated:
+        #     new_order = create_new_order(request)
+        # else:
+        #     new_order = create_anonymous_order(request)
         new_order = create_new_order(request)
         add_products_in_order(request, basket, new_order)
         return Response({"orderId": new_order.id}, status=status.HTTP_200_OK)

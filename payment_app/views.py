@@ -13,15 +13,15 @@ class PaymentNotification(APIView):
         tags=["payment"],
         summary="Подтверждение платежа",
         description="Проверка ответа от YooKassa, если succeeded меняем статус заказа на оплачено",
-        parameters=[
-            OpenApiParameter(
-                name='payment_id',
-                type=str,
-                location=OpenApiParameter.PATH,
-                required=True,
-                description="ID платежа для подтверждения.",
-            ),
-        ],
+        # parameters=[
+        #     OpenApiParameter(
+        #         name='payment_id',
+        #         type=str,
+        #         location=OpenApiParameter.PATH,
+        #         required=True,
+        #         description="ID платежа для подтверждения.",
+        #     ),
+        # ],
     )
     def post(self, request: Request, payment_id: str) -> Response:
         """ Проверка ответа от YooKassa, если succeeded меняем статус заказа на оплачено """

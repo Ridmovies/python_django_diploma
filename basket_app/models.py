@@ -16,8 +16,14 @@ class Basket(models.Model):
 
 class Order(models.Model):
     # Оформление заказа
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
     createdAt = models.DateTimeField(auto_now_add=True)
+    session_key = models.CharField(max_length=128, blank=True, null=True)
     fullName = models.CharField(max_length=128, null=True)
     email = models.EmailField(null=True)
     phone = models.CharField(max_length=11, null=True)

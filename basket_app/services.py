@@ -84,6 +84,14 @@ def create_new_order(request: Request):
     return new_order
 
 
+# def create_anonymous_order(request: Request):
+#     new_order: Order = Order.objects.create(session_key=request.session.session_key)
+#     new_order.totalCost = 0
+#     new_order.status = "Оформление заказа"
+#     new_order.save()
+#     return new_order
+
+
 def add_products_in_order(request: Request, basket: Basket, new_order: Order):
     for product in request.data:
         product_id = product.get("id")
@@ -96,8 +104,6 @@ def add_products_in_order(request: Request, basket: Basket, new_order: Order):
         order_product.order_id = new_order.id
         order_product.save()
         new_order.products.add(order_product)
-        # Calculate Order's totalCost
-        # Фронт сам считает totalCost
         product_price: Decimal = Product.objects.get(id=product_id).price
         products_cost: Decimal = product_price * quantity
         new_order.totalCost += products_cost.quantize(
