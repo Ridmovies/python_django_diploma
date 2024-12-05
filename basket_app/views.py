@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.http import HttpResponse
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.generics import ListAPIView
@@ -13,10 +14,9 @@ from basket_app.serializers import OrderProductSerializer, OrderSerializer
 from basket_app.services import (
     add_product_to_basket,
     add_products_in_order,
-    cancel_order_product,
     create_new_order,
     get_or_create_basket,
-    update_order_info,
+    update_order_info, remove_product_from_basket
 )
 
 
@@ -30,6 +30,7 @@ class BasketView(APIView):
 
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def post(self, request: Request) -> Response:
+        """ ADD TO CART """
         product_id: int = request.data.get("id", None)
         count: str = request.data.get("count", None)
         basket: Basket = get_or_create_basket(request)
@@ -47,14 +48,7 @@ class BasketView(APIView):
     @extend_schema(tags=["basket"], responses=OrderProductSerializer)
     def delete(self, request: Request) -> Response:
         basket: Basket = get_or_create_basket(request)
-        product_id = request.data.get("id")
-        order_product: OrderProduct = OrderProduct.objects.get(
-            product_id=product_id,
-            basket=basket,
-        )
-        if order_product:
-            cancel_order_product(order_product, product_id)
-
+        remove_product_from_basket(request, basket)
         serializer = OrderProductSerializer(basket.products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -62,15 +56,19 @@ class BasketView(APIView):
 class OrdersListView(APIView):
     @extend_schema(tags=["order"])
     def post(self, request: Request) -> Response:
-        # Создание заказа
+        """ Оформление заказа """
         basket: Basket = Basket.objects.get(user=request.user)
+        # basket: Basket = get_or_create_basket(request)
+        # if request.user.is_authenticated:
+        #     new_order = create_new_order(request)
+        # else:
+        #     new_order = create_anonymous_order(request)
         new_order = create_new_order(request)
         add_products_in_order(request, basket, new_order)
         return Response({"orderId": new_order.id}, status=status.HTTP_200_OK)
 
     @extend_schema(tags=["order"])
     def get(self, request: Request) -> Response:
-        # TODO Clean not active orders
         order: Order = Order.objects.filter(
             user=request.user, status__isnull=False
         ).order_by("-createdAt")
@@ -81,10 +79,12 @@ class OrdersListView(APIView):
 class OrderDetailView(APIView):
     @extend_schema(tags=["order"], responses=OrderSerializer)
     def post(self, request: Request, id: int) -> Response:
+        """ Оплатить """
         order: Order = Order.objects.get(id=id)
         if order.status == "Оплачено":
             return Response(status=status.HTTP_409_CONFLICT)
         update_order_info(request, order)
+        # TODO Очищение корзины должно происходить во время подтверждения оплаты
         basket: Basket = Basket.objects.get(user=request.user)
         basket.products.clear()
         return Response({"orderId": order.id})
@@ -103,3 +103,15 @@ class OldOrdersListView(ListAPIView):
         createdAt__lt=datetime.now() - timedelta(days=3), status="Ожидает оплаты"
     )
     serializer_class = OrderSerializer
+
+
+def clean_old_orders(request) -> HttpResponse:
+    """
+    Удаление заказов старше одного дня
+    """
+    Order.objects.filter(
+        createdAt__lt=datetime.now() - timedelta(days=1),
+        status__in=["Оформление заказа", "Ожидает оплаты"],
+    ).delete()
+    return HttpResponse('Orders cleaned successfully.', content_type='text/plain')
+

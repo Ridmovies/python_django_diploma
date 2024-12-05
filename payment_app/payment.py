@@ -1,6 +1,9 @@
 import os
 import uuid
+from _pydecimal import Decimal
 
+import requests
+from django.conf import settings
 from dotenv import load_dotenv
 from rest_framework import status
 from rest_framework.response import Response
@@ -14,7 +17,8 @@ idempotence_key = str(uuid.uuid4())
 
 
 def get_confirmation_url(value: str, description: str, order_id: int):
-    return_url = "http://127.0.0.1:8000"
+    """ Генерация ссылки на оплату """
+    return_url = settings.BASE_URL
     payment = Payment.create(
         {
             "amount": {"value": value, "currency": "RUB"},
@@ -41,19 +45,25 @@ def get_confirmation_url(value: str, description: str, order_id: int):
 
 
 def get_payment_info(payment_id: str):
+    """ Получение информации о платеже """
     payment = Payment.find_one(payment_id)
     return payment
 
 
-def get_payments_list():
-    res = Payment.list()
-    return res
+def get_usd_rate():
+    # URL для получения курсов валют от ЦБ РФ
+    url = 'https://www.cbr-xml-daily.ru/daily_json.js'
 
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            usd_rate = data['Valute']['USD']['Value']
+            return Decimal(round(usd_rate, 4))
+        else:
+            print(f'Ошибка при получении данных: статус-код {response.status_code}')
+            return None
+    except Exception as e:
+        print(f'Произошла ошибка: {e}')
+        return None
 
-def get_payment_confirm(payment_id: str):
-    response = Payment.capture(
-        # TODO HARDCODE
-        payment_id,
-        {"amount": {"value": "2.00", "currency": "RUB"}},
-        idempotence_key,
-    )

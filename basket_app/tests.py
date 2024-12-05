@@ -70,8 +70,7 @@ class BasketTests(APITestCase):
         data = {"id": self.product.id, "count": 2}
         response = self.client.post(self.url, data, format="json")
         response_data = json.loads(response.content)
-        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-        self.assertEqual(response_data, {"message": "Product already in basket"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(len(response_data), 1)
 
     def test_add_too_mach_product_in_basket(self):
@@ -147,7 +146,7 @@ class OrderTests(APITestCase):
             "email": "exeample@example.com",
             "city": "sting",
             "address": "sting",
-            "totalCost": 567.8,
+            "totalCost": 567.80,
             "paymentType": "online",
             "deliveryType": "free",
         }
@@ -159,4 +158,4 @@ class OrderTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = json.loads(response.content)
         self.assertEqual(response_data["id"], 3)
-        self.assertEqual(response_data["totalCost"], 567.8)
+        self.assertEqual(response_data["totalCost"], '567.80')

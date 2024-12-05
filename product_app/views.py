@@ -12,12 +12,12 @@ from product_app.serializers import (
     TagSerializer,
 )
 from product_app.services import update_product_avg_rating
-from product_app.tasks import simple_task, task_update_product_avg_rating
+from django.conf import settings
+from product_app.tasks import simple_task
 
 
 @extend_schema(tags=["product"], responses=ProductFullSerializer)
 class ProductDetailApiView(RetrieveAPIView):
-    # queryset = Product.objects.all()
     queryset = Product.objects.prefetch_related(
         'images',
         'tags',
@@ -32,8 +32,12 @@ class ProductDetailApiView(RetrieveAPIView):
 class AddProductReviewApiView(APIView):
     def post(self, request: Request, id: int):
         review = Review.objects.create(**request.data, product_id=id)
-        task_update_product_avg_rating.delay(id)
-        # update_product_avg_rating(id)
+        # Обновление среднего рейтинга через сигналы
+        # Обновление среднего рейтинга через сервис или через celery
+        # if settings.DEBUG:
+        #     update_product_avg_rating(id)
+        # else:
+        #     task_update_product_avg_rating.delay(id)
         serializer = ReviewSerializer(review, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -44,7 +48,3 @@ class TagsListView(ListAPIView):
     serializer_class = TagSerializer
 
 
-class CeleryTestApi(APIView):
-    def get(self, request: Request):
-        simple_task.delay(5, 4)
-        return Response({"celery": "test"})

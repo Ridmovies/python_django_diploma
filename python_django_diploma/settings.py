@@ -17,10 +17,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -94,7 +92,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "python_django_diploma.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -146,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -160,7 +156,6 @@ USE_I18N = True
 # USE_TZ = True
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -172,18 +167,17 @@ LOGIN_REDIRECT_URL = "/profiles/home"
 # Root folder for media
 MEDIA_ROOT = BASE_DIR / "media/"
 
-
 # My settings
-PAGE_SIZE = 20
+PAGE_SIZE = 2
 BANNERS_AMOUNT = 2
 POPULAR_RATING = 4
 LIMITED_COUNT = 5
+BASE_URL = "http://127.0.0.1:8000"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 REST_FRAMEWORK = {
     # YOUR SETTINGS
@@ -213,14 +207,13 @@ CACHES = {
     }
 }
 
-
+# Время обновления кэша в секундах
 CACHE_MIDDLEWARE_SECONDS = 5 * 1
 
 # Celery settings
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379/0"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379/0"
-
 
 # LOGGING = {
 #     'version': 1,

@@ -18,7 +18,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         "Category", on_delete=models.CASCADE, blank=True, null=True
     )
-    tags = models.ManyToManyField("Tag", related_name="products")
+    tags = models.ManyToManyField("Tag", related_name="products", blank=True)
 
     def __str__(self):
         return self.title
@@ -76,7 +76,10 @@ class CategoryImage(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=12)
     # product = models.ManyToManyField(
-    #     Product, related_name="tags", verbose_name="product"
+    #     Product, related_name="tags",
+    #     verbose_name="product",
+    #     blank=True,
+    #     null=True
     # )
 
     def __str__(self):

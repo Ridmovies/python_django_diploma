@@ -13,8 +13,7 @@ from rest_framework.views import APIView
 
 from auth_app.models import Avatar, Profile
 from auth_app.serializers import ProfileSerializer
-from basket_app.models import Basket
-from python_django_diploma.settings import MEDIA_URL
+from django.conf import settings
 
 
 class LoginApiView(APIView):
@@ -45,10 +44,6 @@ class SignUpApiView(APIView):
         try:
             user = User.objects.create_user(username=username, password=password)
             login(request, user)
-
-            Basket.objects.create(user=request.user)
-            Profile.objects.create(user=request.user)
-
             return Response(status=status.HTTP_201_CREATED)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -70,7 +65,8 @@ class ProfileView(generics.RetrieveAPIView):
 
     def get_object(self) -> Profile:
         # Получаем профиль текущего пользователя
-        return Profile.objects.get(user=self.request.user)
+        profile: Profile = Profile.objects.get(user=self.request.user)
+        return profile
 
     def post(self, request: Request) -> Response:
         data = request.data
@@ -88,14 +84,12 @@ class ProfileView(generics.RetrieveAPIView):
 class ProfileAvatarView(APIView):
     @extend_schema(tags=["profile"])
     def post(self, request: Request) -> Response:
-        # TODO too much avatar var
         avatar = request.FILES["avatar"]
         profile = Profile.objects.get(user=request.user)
         avatar: Avatar = Avatar.objects.create(src=avatar)
         old_avatar_src = None
         if profile.avatar:
-            # Can't load MEDIA_URL from django.conf. settings
-            old_avatar_src = MEDIA_URL + str(profile.avatar.src)
+            old_avatar_src = settings.LOGIN_URL + str(profile.avatar.src)
         profile.avatar = avatar
         profile.save()
         if old_avatar_src:

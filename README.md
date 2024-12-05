@@ -163,11 +163,12 @@ docker-compose up
 
 
 ### Просмотр активных контейнеров
+Отображает список запущенных контейнеров.
 
 ```bash
 docker ps
 ```
-Отображает список запущенных контейнеров.
+
 
 ### Принудительная остановка всех контейнеров
 
@@ -211,12 +212,16 @@ To start the celery beat service:
 celery -A python_django_diploma beat -l INFO
 ```
 
-## Линтеры:
+## Линтеры и форматеры:
 ```bash
 black --check --diff .\product_app\views.py
+```
 
+```bash
 isort --check-only --diff --profile black .\product_app\views.py
+```
 
+```bash
 mypy --incremental ./product_app/views.py 
 ```
 
