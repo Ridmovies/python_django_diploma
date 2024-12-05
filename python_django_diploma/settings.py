@@ -159,13 +159,20 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / "static"
+
 MEDIA_URL = "media/"
+# Root folder for media
+MEDIA_ROOT = BASE_DIR / "media/"
 
 LOGIN_URL = "/sign-in/"
 LOGIN_REDIRECT_URL = "/profiles/home"
-# Root folder for media
-MEDIA_ROOT = BASE_DIR / "media/"
+
 
 # My settings
 PAGE_SIZE = 2
