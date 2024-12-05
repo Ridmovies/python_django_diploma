@@ -200,7 +200,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "localhost"
+REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "127.0.0.1"
 # REDIS_HOST = "redis"
 
 CACHES = {
