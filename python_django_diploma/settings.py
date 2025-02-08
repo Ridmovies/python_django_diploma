@@ -159,13 +159,23 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+# Настройка STATIC_URL
+STATIC_URL = '/static/'
+
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / "static"
+
 MEDIA_URL = "media/"
+# Root folder for media
+MEDIA_ROOT = BASE_DIR / "media/"
 
 LOGIN_URL = "/sign-in/"
 LOGIN_REDIRECT_URL = "/profiles/home"
-# Root folder for media
-MEDIA_ROOT = BASE_DIR / "media/"
+
 
 # My settings
 PAGE_SIZE = 2
@@ -194,7 +204,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "localhost"
+REDIS_HOST = "redis" if os.environ.get("DOCKER_RUNTIME") else "127.0.0.1"
 # REDIS_HOST = "redis"
 
 CACHES = {
